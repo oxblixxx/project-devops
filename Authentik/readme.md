@@ -2,6 +2,7 @@ Firstly look at the .env file, ensure that the user running the compose file, th
 Afterwards, open a new terminal of the same user, run the compose file, on the second terminal set permsisions `sudo chown user:user -R appdata/`.
 Then proceed to let the compose to run till it pops and error related to redis, cancel the compose.
 Then run `sudo docker compose up -d --force-recreate`.
+https://docs.goauthentik.io/docs/install-config/install/docker-compose
 Then, proceed to the url of the setup `https://authentiik.oxlava.me/if/flow/initial-setup/`.
 Set up the first time user.
 Afterwards proceed to delete the akadmin, user, better still deactivate the user.

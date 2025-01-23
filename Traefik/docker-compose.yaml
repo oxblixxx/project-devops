@@ -1,1 +1,39 @@
 services:
+  # Traefik 3 - Reverse Proxy
+  traefik:
+    container_name: traefik
+    image: traefik:3.2
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    # profiles: ["core", "all"]
+    networks:
+      traefik:
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro # Enable if not using Socket Proxy
+      - ${HOME_DIRECTORY}/config/acme.json:/acme.json # Certs File 
+      - ${HOME_DIRECTORY}/logs/traefik.log:/logs # Traefik logs
+      - ${HOME_DIRECTORY}/config/traefik.yml:/traefik.yml
+      - ${HOME_DIRECTORY}/dynamic:/etc/traefik/dynamic
+    environment:
+      - TZ=$TZ 
+      - CF_API_EMAIL=$CF_API_EMAIL
+      - CF_DNS_API_TOKEN=$CF_DNS_API_TOKEN
+      - DOMAIN_NAME=$DOMAIN_NAME
+      - HOME_DIRECTORY=$HOME_DIRECTORY
+    labels:
+      - "traefik.enable=true"
+      # HTTP Routers
+      - "traefik.http.routers.traefik-rtr.entrypoints=websecure"
+      - "traefik.http.routers.traefik-rtr.rule=Host(`board.$DOMAIN_NAME`)"
+      # Services - API
+      - "traefik.http.routers.traefik-rtr.service=api@internal"
+      # Middlewares
+      - "traefik.http.routers.traefik-rtr.middlewares=redirect@file,authentik@file,middlewares-rate-limit"
+
+networks:
+  traefik:
+    external: true

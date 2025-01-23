@@ -1,1 +1,92 @@
+# Global settings
+global:
+  # Automatically check for new versions of Traefik
+  checkNewVersion: true
+  # Send anonymous usage statistics to Traefik
+  sendAnonymousUsage: true
+
+# EntryPoints configuration
+# https://doc.traefik.io/traefik/routing/entrypoints/
+entryPoints:
+  # HTTP entry point (port 80)
+  web:
+    address: ":80"
+    http:
+      # Redirect HTTP traffic to HTTPS (websecure)
+      redirections:
+        entryPoint:
+          to: websecure  # Redirect to the websecure entry point
+          scheme: https  # Use HTTPS scheme for redirection
+
+  # HTTPS entry point (port 443)
+  websecure:
+    address: ":443"
+    http:
+      tls:
+        # Use Let's Encrypt DNS-Cloudflare resolver for certificates
+        certResolver: dns-cloudflare # Cert resoolver created below
+        domains:
+          - main: "*.xxxxxxx.net"  # Main domain for the TLS certificate
+          
+  # Traefik dashboard entry point (port 8080)
+#  traefik:
+#    address: ":8080"
+
+# API configuration (enable the dashboard and insecure API access)
+api:
+  dashboard: true  # Enable the Traefik dashboard
+  insecure: true   # Allow insecure API access (use with caution)
+
+# https://doc.traefik.io/traefik/observability/logs/
+# Logging configuration
+log:
+  level: ERROR  # Log level, options are: DEBUG, INFO, WARN, ERROR, FATAL, PANIC
+  filePath: "/logs"  # Path to store Traefik logs
+
+# Access log configuration
+accessLog:
+  addInternals: true
+  filePath: "/access_logs"  # Path to store access logs
+  bufferingSize: 100  # Buffer size for access log entries (in lines)
+  filters:
+    statusCodes: ["204-299", "400-499", "500-599"]  # Log these status code ranges
+    retryAttempts: true
+    minDuration: "10ms"
+
+# Providers configuration
+providers:
+  # Docker provider (auto-discovery of services in Docker)
+  docker:
+#    enabled: true  # Enable Docker provider
+    endpoint: "unix:///var/run/docker.sock"  # Docker socket endpoint (default)
+    exposedByDefault: false  # Services are not exposed by default
+    network: "proxy"  # Specify the Docker network to connect to Traefik
+
+  # File provider (load dynamic configuration from files)
+  file:
+    directory: "/etc/traefik/dynamic"  # Directory to watch for dynamic configuration files
+    watch: true  # Watch for changes in the configuration files
+
+# Let's Encrypt ACME configuration with Cloudflare DNS challenge
+certificatesResolvers:
+  dns-cloudflare:
+    acme:
+      # Let's Encrypt ACME server URL (production environment)
+      caServer: https://acme-v02.api.letsencrypt.org/directory # prod (default)
+#      caserver: "https://acme-staging-v02.api.letsencrypt.org/directory"  # Use Staging URL for testing (uncomment when testing)
+      storage: "acme.json"  # File to store the certificate data (ensure this file is secure)
+      email: "xxxxxxx@outlook.com"
+      dnsChallenge:
+        provider: cloudflare  # DNS challenge provider (Cloudflare)
+        resolvers:
+          - "1.1.1.1:53"  # Cloudflare DNS resolver
+          - "1.0.0.1:53"  # Secondary Cloudflare DNS resolver
+        delayBeforeCheck: 90  # Delay before checking DNS propagation (in seconds)
+
+# Optionally, you can set trusted IPs for forwarding headers, e.g., Cloudflare IPs
+# entryPoints:
+#   websecure:
+#     forwardedHeaders:
+#
+#       trustedIPs: "$CLOUDFLARE_IPS,$LOCAL_IPS"  # Allow Cloudflare and local IPs to set X-Forwarded-* headers
 

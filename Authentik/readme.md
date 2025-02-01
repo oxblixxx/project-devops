@@ -141,11 +141,36 @@ If you restart the service and access the it on the URL, you should get somethin
 
 ---
 
-We have succesfully been able to use Authentik with applications behind Traefik, To setup application not behind Traefik, [Authentik](https://docs.goauthentik.io/integrations/] has provided with the approach to be taken. We will be setting up for [GITLAB](https://docs.goauthentik.io/integrations/services/gitlab/). It's to be noted that the GITLAB is outside the Traefik domain. I did it once and got it once, so I believe that part of the docs is self explanatory.
+We have succesfully been able to use Authentik with applications behind Traefik, To setup application not behind Traefik, [Authentik](https://docs.goauthentik.io/integrations/] has provided with the approach to be taken. We will be setting up for [GITLAB](https://docs.goauthentik.io/integrations/services/gitlab/) . It's to be noted that the GITLAB is outside the Traefik domain. I did it once and got it once, so I believe that part of the docs is self explanatory.
 
 
 ### Rebranding Authentik
+---
 
+## Step 1: Prepare Logo and Favicon
+
+1. Obtain your logo images and favicon.
+2. Transfer them to the server using a tool like **FileZilla** or add them to this repository.
+3. If using a repository, clone it and move the files to the appropriate folder:
+   - **Folder Path**: `authentik/media/public` (this is the mounted volume for Authentik data).
+
+---
+
+## Step 2: Update Branding in Admin Interface
+
+1. Log in to the **Authentik Admin Console** and access the **Admin Interface**.
+2. Navigate to **System > Brands**.
+3. Update the following fields:
+   - **Logo**: Provide the path to your logo file.
+   - **Favicon**: Provide the path to your favicon file.
+4. Save the changes.
+5. Logout.
+
+---
+
+## Setting up Enrolment
+
+## Setting up 2FA
 
 ## Notes
 - Always ensure permissions are correctly set to avoid permission errors.

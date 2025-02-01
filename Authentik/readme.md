@@ -67,6 +67,86 @@ Ensure the following prerequisites are met before starting the installation:
    - Select the user and click `+` to add them to the group.
 3. Delete or deactivate the default `akadmin` user for security purposes.
 
+### 7. Authentik Setup with Traefik Reverse Proxy
+Now that Authentik is set up, it can be managed using [different approaches](https://docs.goauthentik.io/docs/providers). In simpler terms, Authentik can protect applications behind different domains. In this setup, Traefik is used as the reverse proxy, and SAML/OIDC will be used as test in this documentation to utilize to verify access outside the domain.
+Since Authentik is behind Traefik, protecting a designated URL is straightforward:
+
+1. Add a single line of Traefik label to your configuration.
+```sh
+  - "traefik.http.routers.<service-entrypoints-name>.middlewares=authentik@file"
+```
+3. Create an application and provider in Authentik.
+
+Once these steps are completed, the designated URL will be protected by Authentik.
+
+Already, while spinning up Traefik, Authentik as been added in the [dynamic folder](https://github.com/oxblixxx/project-devops/blob/main/Traefik/dynamic/authentik.yaml), to setup the Authentik middlewares. You can go ahead to uncomment that in that line, and it's not needed to restart the docker container.
+
+### 8. Securing Applications
+Securing an application behind the Traefik reverse proxy is simply just to add a singe line like we mentioned
+```sh
+  - "traefik.http.routers.<service-entrypoints-name>.middlewares=authentik@file"
+```
+If you have existing labels in your application compose file, ensure your middleware name matches the entrypoints you want to secure, such as `grafana-web` and `grafana-secure`.  `grafana-secure` is what we will want to secure as it runs on HTTPS.  
+```sh
+      - "traefik.http.routers.grafana-web.entrypoints=web"
+      - "traefik.http.routers.grafana-secure.entrypoints=websecure"
+      - "traefik.http.routers.grafana-secure.middlewares=authentik@file"
+```
+
+If you restart the service and access the it on the URL, you should get something similar to this
+<IMG>
+
+---
+
+## 9. Create a Proxy Provider
+
+1. Log in to the **Authentik Admin Console** as an admin user and access the **Admin Interface**.
+2. Navigate to **Applications >> Providers** and create a new provider.
+3. Choose **Proxy Provider** and configure the following:
+   - **Name**: Provide a name for the provider.
+   - **Authentication Flow**: Set to `None`.
+   - **Authorization Flow**: Choose an appropriate flow.
+4. Select **Forward Auth Single Application**.
+5. Set **External Host** to `https://www.<service-name>.com`.
+6. Leave the remaining settings as default and click **Finish**.
+
+---
+
+## 10. Create an Application
+
+1. Navigate to **Applications** and create a new application.
+2. Configure the following:
+   - **Name**: Set a name for the application.
+   - **Slug**: Use the same value as the name.
+   - **Provider**: Select the provider created earlier.
+   - **Groups**: Leave this as is.
+3. Under **UI Settings**, set the **Launch URL** to the value used for **External Host**.
+4. Click **Create**.
+
+---
+
+## 11. Configure Outpost
+
+1. Navigate to **Outpost** and edit the `Authentik Embedded Outpost`.
+2. Under **Available Applications**, locate the newly created application.
+3. Click on the application, then click the `>` sign to move it to **Selected Applications**.
+4. Click **Update** to save the changes.
+
+---
+
+## 12. Verify Configuration
+
+1. Refresh the **External Host** you want Authentik to protect.
+2. You should now be redirected to Authentik for authentication before accessing the application.
+
+---
+
+We have succesfully been able to use Authentik with applications behind Traefik, To setup application not behind Traefik, [Authentik](https://docs.goauthentik.io/integrations/] has provided with the approach to be taken. We will be setting up for [GITLAB](https://docs.goauthentik.io/integrations/services/gitlab/). It's to be noted that the GITLAB is outside the Traefik domain. I did it once and got it once, so I believe that part of the docs is self explanatory.
+
+
+### Rebranding Authentik
+
+
 ## Notes
 - Always ensure permissions are correctly set to avoid permission errors.
 - After the setup, review and secure the configurations according to your organization's policies.

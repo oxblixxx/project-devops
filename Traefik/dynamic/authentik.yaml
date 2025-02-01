@@ -2,6 +2,7 @@
 #     middlewares:
 #         authentik:
 #             forwardAuth:
+##  WITH HOW TRAEFIK WORKS, `AUTHENTIK_SERVER` SHOULD EXACTLY MATCH THE CONTAINER NAME YOU ASSIGNED TO THE AUTHENTIK SERVER.
 #                 address: http://authentik_server:9000/outpost.goauthentik.io/auth/traefik
 #                 trustForwardHeader: true
 #                 authResponseHeaders:

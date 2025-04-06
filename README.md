@@ -1,4 +1,5 @@
 # Project DevOps
+This project involves setting up my home-lab, on vagrant boxes. So setting up vagrant, I encountered issues and I had to do some uninstall and install, issues with powershell as well. My current vagrant version is 2.4.0 and my virtualbox is 7.0 which is my preferred provider. When I run vagrant up, it freezes, but when I go ahead to look at virtualbox, it shows the box is provisioned, but for cases where I want to provision more than one, it doesn't provision more than one. I am yet to figure that out, but I making use of one node now, later when I want to practice k8s, I will look into configuring it to have more nodes. My Network is `Bridged adapter` as I need a public ip address. That's my current setup. So I want to setup all of this within my homelab. Firstly I want to setup my environment to have docker, be able to provision users and copy the user keys.
 
 This project involves setting up a variety of open-source tools, each serving different use cases, including:
 

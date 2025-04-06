@@ -12,9 +12,9 @@
 # #     - ../ansible-playbook/A
 
 - name: Set acme.json permission
-    ansible.builtin.command:
-      cmd: "chmod 600 acme.json"
-      chdir: "../ansible-playbook/Traefik/config"
+  ansible.builtin.command:
+    cmd: "chmod 600 acme.json"
+    chdir: "../ansible-playbook/Traefik/config"
 
     # - name: Start Docker Compose services
     #   ansible.builtin.command:

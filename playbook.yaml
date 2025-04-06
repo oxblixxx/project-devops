@@ -1,0 +1,6 @@
+---
+- name: Apply common roles
+  hosts: webservers
+  roles:
+    - ansible-playbook/ansible-role-docker
+#    - ansible-role-mysql

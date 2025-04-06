@@ -1,16 +1,16 @@
 ---
 - name: Deploy Docker Compose applications
   become: yes       # run with sudo
-  vars:
-    # List of directories containing docker-compose.yml files
-    compose_projects:
-      - 
-      - ../ansible-playbook/Traefik
-      - ../ansible-playbook/Authentik
-      - ../ansible-playbook/Grafana
-      - ../ansible-playbook/Uptime-kuma
-      - ../ansible-playbook/Vaultwarden
-#     - ../ansible-playbook/A
+#   vars:
+#     # List of directories containing docker-compose.yml files
+#     compose_projects:
+#       - 
+#       - ../ansible-playbook/Traefik
+#       - ../ansible-playbook/Authentik
+#       - ../ansible-playbook/Grafana
+#       - ../ansible-playbook/Uptime-kuma
+#       - ../ansible-playbook/Vaultwarden
+# #     - ../ansible-playbook/A
 
   tasks:
     - name: Set acme.json permission

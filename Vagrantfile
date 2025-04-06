@@ -76,6 +76,9 @@ Vagrant.configure("2") do |config|
     apt install git
     pip3 install ansible
     apt install neovim
+    git config --global user.email ""
+    git config --global user.name ""
+
   #  ln -s /home/vagrant/.local/bin/ansible /usr/local/bin/ansible
 
   SHELL

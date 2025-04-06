@@ -26,7 +26,6 @@
   vars:
     # List of directories containing docker-compose.yml files
     compose_projects:
-      - 
       - project-devops/Traefik
       - project-devops/Authentik
       - project-devops/Grafana

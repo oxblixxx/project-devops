@@ -75,6 +75,7 @@ Vagrant.configure("2") do |config|
     apt install python3-pip
     apt install git
     pip3 install ansible
+    apt install neovim
   #  ln -s /home/vagrant/.local/bin/ansible /usr/local/bin/ansible
 
   SHELL

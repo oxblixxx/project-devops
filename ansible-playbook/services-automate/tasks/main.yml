@@ -15,7 +15,6 @@
   ansible.builtin.command:
     cmd: "chmod 600 acme.json"
     chdir: "project-devops/Traefik/config"
-
     # - name: Start Docker Compose services
     #   ansible.builtin.command:
     #     cmd: "docker compose up -d"
@@ -23,3 +22,18 @@
     #   loop: "{{ compose_projects }}"
     #   register: compose_result
     #   changed_when: "'Creating' in compose_result.stdout"
+- name: Start Docker Compose services
+  vars:
+    # List of directories containing docker-compose.yml files
+    compose_projects:
+      - 
+      - project-devops/Traefik
+      - project-devops/Authentik
+      - project-devops/Grafana
+      - project-devops/Uptime-kuma
+      - project-devops/Vaultwarden
+  ansible.builtin.command:
+    cmd: "docker compose up -d"
+    chdir: "{{ item }}"
+  loop: "{{ compose_projects }}"
+  register: compose_result

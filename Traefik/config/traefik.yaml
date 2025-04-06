@@ -26,7 +26,7 @@ entryPoints:
         # Use Let's Encrypt DNS-Cloudflare resolver for certificates
         certResolver: dns-cloudflare # Cert resoolver created below
         domains:
-          - main: "*.xxxxxxx.net"  # Main domain for the TLS certificate
+          - main: "*.oxtech.me"     #       Main domain for the TLS certificate
           
   # Traefik dashboard entry point (port 8080)
 #  traefik:
@@ -72,10 +72,10 @@ certificatesResolvers:
   dns-cloudflare:
     acme:
       # Let's Encrypt ACME server URL (production environment)
-      caServer: https://acme-v02.api.letsencrypt.org/directory # prod (default)
-#      caserver: "https://acme-staging-v02.api.letsencrypt.org/directory"  # Use Staging URL for testing (uncomment when testing)
+     #caServer: https://acme-v02.api.letsencrypt.org/directory # prod (default)
+      caserver: "https://acme-staging-v02.api.letsencrypt.org/directory"  # Use Staging URL for testing (uncomment when testing)
       storage: "acme.json"  # File to store the certificate data (ensure this file is secure)
-      email: "xxxxxxx@outlook.com"
+      email: "phamust1111@gmail.com"
       dnsChallenge:
         provider: cloudflare  # DNS challenge provider (Cloudflare)
         resolvers:

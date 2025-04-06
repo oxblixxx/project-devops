@@ -1,5 +1,6 @@
 ---
-#- name: Deploy Docker Compose applications
+- name: Deploy Docker Compose applications
+#  become: yes       # run with sudo
 #   vars:
 #     # List of directories containing docker-compose.yml files
 #     compose_projects:
@@ -11,10 +12,11 @@
 #       - ../ansible-playbook/Vaultwarden
 # #     - ../ansible-playbook/A
 
-- name: Set acme.json permission
-  ansible.builtin.command:
-    cmd: "chmod 600 acme.json"
-    chdir: "../ansible-playbook/Traefik/config"
+  tasks:
+    - name: Set acme.json permission
+      ansible.builtin.command:
+         cmd: "chmod 600 acme.json"
+         chdir: "../ansible-playbook/Traefik/config"
 
     # - name: Start Docker Compose services
     #   ansible.builtin.command:

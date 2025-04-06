@@ -73,6 +73,7 @@ Vagrant.configure("2") do |config|
     apt-get update
     apt-get install -y apache2
     apt install python3-pip
+    apt install git
     pip3 install ansible
   #  ln -s /home/vagrant/.local/bin/ansible /usr/local/bin/ansible
 

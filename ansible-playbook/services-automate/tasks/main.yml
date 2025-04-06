@@ -1,6 +1,6 @@
 ---
 - name: Deploy Docker Compose applications
-  hosts: localhost  # or your target server group
+  hosts: webservers   # or your target server group
   become: yes       # run with sudo
   vars:
     # List of directories containing docker-compose.yml files
@@ -18,7 +18,6 @@
       ansible.builtin.command:
          cmd: "chmod 600 acme.json"
          chdir: "../ansible-playbook/Traefik/config"
-         
     - name: Start Docker Compose services
       ansible.builtin.command:
         cmd: "docker compose up -d"

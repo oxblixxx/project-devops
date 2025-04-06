@@ -1,5 +1,5 @@
 ---
-- name: Deploy Docker Compose applications
+# name: Deploy Docker Compose applications
 #   vars:
 #     # List of directories containing docker-compose.yml files
 #     compose_projects:

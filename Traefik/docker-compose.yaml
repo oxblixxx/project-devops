@@ -27,12 +27,12 @@ services:
     labels:
       - "traefik.enable=true"
       # HTTP Routers
-      - "traefik.http.routers.traefik-rtr.entrypoints=websecure"
+      - "traefik.http.routers.traefik-rtr.entrypoints=web"
       - "traefik.http.routers.traefik-rtr.rule=Host(`board.$DOMAIN_NAME`)"
       # Services - API
       - "traefik.http.routers.traefik-rtr.service=api@internal"
       # Middlewares
-      - "traefik.http.routers.traefik-rtr.middlewares=redirect@file,authentik@file,middlewares-rate-limit"
+      - "traefik.http.routers.traefik-rtr.middlewares=redirect@file,middlewares-rate-limit@file"
 
 networks:
   traefik:

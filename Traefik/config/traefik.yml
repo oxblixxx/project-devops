@@ -60,7 +60,7 @@ providers:
 #    enabled: true  # Enable Docker provider
     endpoint: "unix:///var/run/docker.sock"  # Docker socket endpoint (default)
     exposedByDefault: false  # Services are not exposed by default
-    network: "proxy"  # Specify the Docker network to connect to Traefik
+    network: "traefik"  # Specify the Docker network to connect to Traefik
 
   # File provider (load dynamic configuration from files)
   file:

@@ -1,0 +1,29 @@
+2025-04-07T15:05:02Z ERR The ACME resolve is skipped from the resolvers list error="unable to get ACME account: unexpected end of JSON input" resolver=dns-cloudflare
+2025-04-07T15:05:04Z ERR error="middleware \"middlewares-rate-limit@docker\" does not exist" entryPointName=web routerName=traefik-rtr@docker
+2025-04-07T15:05:52Z ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-04-07T15:05:52Z ERR Error while starting server error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-04-07T15:05:52Z ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-04-07T15:05:52Z ERR Error while starting server error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-04-07T15:05:52Z ERR error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-04-07T15:05:52Z ERR Error while starting server error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-04-07T15:08:46Z ERR The ACME resolve is skipped from the resolvers list error="unable to get ACME account: unexpected end of JSON input" resolver=dns-cloudflare
+2025-04-07T15:13:00Z ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-04-07T15:13:00Z ERR error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-04-07T15:13:00Z ERR error="close tcp [::]:80: use of closed network connection" entryPointName=web
+2025-04-07T15:13:00Z ERR error="close tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-04-07T15:13:00Z ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-04-07T15:13:00Z ERR error="close tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-04-07T15:46:19Z ERR The ACME resolve is skipped from the resolvers list error="unable to get ACME account: unexpected end of JSON input" resolver=dns-cloudflare
+2025-04-07T15:47:15Z ERR error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-04-07T15:47:15Z ERR Error while starting server error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-04-07T15:47:15Z ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-04-07T15:47:15Z ERR Error while starting server error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-04-07T15:47:15Z ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-04-07T15:47:15Z ERR Error while starting server error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-04-07T15:48:37Z ERR The ACME resolve is skipped from the resolvers list error="unable to get ACME account: unexpected end of JSON input" resolver=dns-cloudflare
+2025-04-07T15:51:19Z ERR error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-04-07T15:51:19Z ERR Error while starting server error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
+2025-04-07T15:51:19Z ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-04-07T15:51:19Z ERR Error while starting server error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-04-07T15:51:19Z ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-04-07T15:51:19Z ERR Error while starting server error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure

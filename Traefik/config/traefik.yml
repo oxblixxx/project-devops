@@ -12,6 +12,9 @@ entryPoints:
   web:
     address: ":80"
     http:
+#      middlewares:
+#        - crowdsec-bouncer@file
+#        - ip-whitelist@file
       # Redirect HTTP traffic to HTTPS (websecure)
       redirections:
         entryPoint:
@@ -22,20 +25,44 @@ entryPoints:
   websecure:
     address: ":443"
     http:
+#      middlewares:
+#        - crowdsec-bouncer@file
+#        - ip-whitelist@file
       tls:
         # Use Let's Encrypt DNS-Cloudflare resolver for certificates
         certResolver: dns-cloudflare # Cert resoolver created below
         domains:
-          - main: "*.oxtech.me"     #       Main domain for the TLS certificate
-          
+          - main: "*.oxlava.me"  # Main domain for the TLS certification
+
+#  web-external:
+#    address: ":81"
+#    http:
+ #     middlewares:
+ #       - crowdsec-bouncer@file
+#      redirections:
+#        entryPoint:
+#          to: websecure-external
+#          scheme: https
+
+#  websecure-external:
+#    address: ":444"
+#    http:
+##      middlewares:
+#        - crowdsec-bouncer@file
+#      tls:
+#        # Use Let's Encrypt DNS-Cloudflare resolver for certificates
+#        certResolver: dns-cloudflare # Cert resoolver created below
+#        domains:
+#          - main: "*.oxlava.me"  # Main domain for the TLS certificate
+
   # Traefik dashboard entry point (port 8080)
 #  traefik:
-#    address: ":8080"
+#    address: ":8080
 
 # API configuration (enable the dashboard and insecure API access)
 api:
   dashboard: true  # Enable the Traefik dashboard
-  insecure: true   # Allow insecure API access (use with caution)
+  insecure: false   # Allow insecure API access (use with caution)
 
 # https://doc.traefik.io/traefik/observability/logs/
 # Logging configuration
@@ -72,8 +99,8 @@ certificatesResolvers:
   dns-cloudflare:
     acme:
       # Let's Encrypt ACME server URL (production environment)
-     #caServer: https://acme-v02.api.letsencrypt.org/directory # prod (default)
-      caserver: "https://acme-staging-v02.api.letsencrypt.org/directory"  # Use Staging URL for testing (uncomment when testing)
+      caServer: https://acme-v02.api.letsencrypt.org/directory # prod (default)
+#      caserver: "https://acme-staging-v02.api.letsencrypt.org/directory"  # Use Staging URL for testing (uncomment when testing)
       storage: "acme.json"  # File to store the certificate data (ensure this file is secure)
       email: "phamust1111@gmail.com"
       dnsChallenge:
@@ -89,4 +116,3 @@ certificatesResolvers:
 #     forwardedHeaders:
 #
 #       trustedIPs: "$CLOUDFLARE_IPS,$LOCAL_IPS"  # Allow Cloudflare and local IPs to set X-Forwarded-* headers
-

@@ -1,0 +1,12 @@
+# htpasswd  -B -n <username>
+# Press enter, then set password
+# Declaring the user list
+# Add users after the last line
+# https://doc.traefik.io/traefik/middlewares/http/basicauth/
+http:
+  middlewares:
+    user-auth:
+      basicAuth:
+        users:
+          - kenny:$2y$05$1GfdijvQC6kAWuqAzAQ91u9PWwytKC6RHjtCrrvHTUgW3e0v0QdKS
+          - chudi:$2y$05$CnBg1mSH2u7Lt8I2tWcpOuPjyixQSm5yec57gaQ8Nmd767I4cIYgm

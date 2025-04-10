@@ -1,0 +1,2 @@
+./logs/traefik.yml
+./config/acme.json

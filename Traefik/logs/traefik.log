@@ -1,29 +1,92 @@
-2025-04-07T15:05:02Z ERR The ACME resolve is skipped from the resolvers list error="unable to get ACME account: unexpected end of JSON input" resolver=dns-cloudflare
-2025-04-07T15:05:04Z ERR error="middleware \"middlewares-rate-limit@docker\" does not exist" entryPointName=web routerName=traefik-rtr@docker
-2025-04-07T15:05:52Z ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
-2025-04-07T15:05:52Z ERR Error while starting server error="accept tcp [::]:80: use of closed network connection" entryPointName=web
-2025-04-07T15:05:52Z ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
-2025-04-07T15:05:52Z ERR Error while starting server error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
-2025-04-07T15:05:52Z ERR error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
-2025-04-07T15:05:52Z ERR Error while starting server error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
-2025-04-07T15:08:46Z ERR The ACME resolve is skipped from the resolvers list error="unable to get ACME account: unexpected end of JSON input" resolver=dns-cloudflare
-2025-04-07T15:13:00Z ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
-2025-04-07T15:13:00Z ERR error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
-2025-04-07T15:13:00Z ERR error="close tcp [::]:80: use of closed network connection" entryPointName=web
-2025-04-07T15:13:00Z ERR error="close tcp [::]:8080: use of closed network connection" entryPointName=traefik
-2025-04-07T15:13:00Z ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
-2025-04-07T15:13:00Z ERR error="close tcp [::]:443: use of closed network connection" entryPointName=websecure
-2025-04-07T15:46:19Z ERR The ACME resolve is skipped from the resolvers list error="unable to get ACME account: unexpected end of JSON input" resolver=dns-cloudflare
-2025-04-07T15:47:15Z ERR error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
-2025-04-07T15:47:15Z ERR Error while starting server error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
-2025-04-07T15:47:15Z ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
-2025-04-07T15:47:15Z ERR Error while starting server error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
-2025-04-07T15:47:15Z ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
-2025-04-07T15:47:15Z ERR Error while starting server error="accept tcp [::]:80: use of closed network connection" entryPointName=web
-2025-04-07T15:48:37Z ERR The ACME resolve is skipped from the resolvers list error="unable to get ACME account: unexpected end of JSON input" resolver=dns-cloudflare
-2025-04-07T15:51:19Z ERR error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
-2025-04-07T15:51:19Z ERR Error while starting server error="accept tcp [::]:8080: use of closed network connection" entryPointName=traefik
-2025-04-07T15:51:19Z ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
-2025-04-07T15:51:19Z ERR Error while starting server error="accept tcp [::]:80: use of closed network connection" entryPointName=web
-2025-04-07T15:51:19Z ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
-2025-04-07T15:51:19Z ERR Error while starting server error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-04-09T23:29:49Z ERR The ACME resolve is skipped from the resolvers list error="unable to get ACME account: permissions 664 for acme.json are too open, please use 600" resolver=dns-cloudflare
+2025-04-09T23:29:51Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=tunde-nextcloud-router@file
+2025-04-09T23:29:51Z ERR No valid entryPoint for this router routerName=tunde-nextcloud-router@file
+2025-04-09T23:29:51Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=church-crm-router@file
+2025-04-09T23:29:51Z ERR No valid entryPoint for this router routerName=church-crm-router@file
+2025-04-09T23:29:51Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=tunde-nextcloud-router@file
+2025-04-09T23:29:51Z ERR No valid entryPoint for this router routerName=tunde-nextcloud-router@file
+2025-04-09T23:29:51Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=church-crm-router@file
+2025-04-09T23:29:51Z ERR No valid entryPoint for this router routerName=church-crm-router@file
+2025-04-09T23:29:52Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=tunde-nextcloud-router@file
+2025-04-09T23:29:52Z ERR No valid entryPoint for this router routerName=tunde-nextcloud-router@file
+2025-04-09T23:29:52Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=church-crm-router@file
+2025-04-09T23:29:52Z ERR No valid entryPoint for this router routerName=church-crm-router@file
+2025-04-09T23:29:52Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=church-crm-router@file
+2025-04-09T23:29:52Z ERR No valid entryPoint for this router routerName=church-crm-router@file
+2025-04-09T23:29:52Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=tunde-nextcloud-router@file
+2025-04-09T23:29:52Z ERR No valid entryPoint for this router routerName=tunde-nextcloud-router@file
+2025-04-09T23:29:52Z ERR Router uses a nonexistent certificate resolver certificateResolver=dns-cloudflare routerName=traefik-rtr@docker
+2025-04-09T23:30:25Z ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-04-09T23:30:25Z ERR Error while starting server error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-04-09T23:30:25Z ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-04-09T23:30:25Z ERR Error while starting server error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-04-09T23:31:15Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=tunde-nextcloud-router@file
+2025-04-09T23:31:15Z ERR No valid entryPoint for this router routerName=tunde-nextcloud-router@file
+2025-04-09T23:31:15Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=church-crm-router@file
+2025-04-09T23:31:15Z ERR No valid entryPoint for this router routerName=church-crm-router@file
+2025-04-09T23:31:15Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=tunde-nextcloud-router@file
+2025-04-09T23:31:15Z ERR No valid entryPoint for this router routerName=tunde-nextcloud-router@file
+2025-04-09T23:31:15Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=church-crm-router@file
+2025-04-09T23:31:15Z ERR No valid entryPoint for this router routerName=church-crm-router@file
+2025-04-09T23:32:12Z ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-04-09T23:32:12Z ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-04-09T23:32:12Z ERR error="close tcp [::]:80: use of closed network connection" entryPointName=web
+2025-04-09T23:32:12Z ERR error="close tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-04-09T23:34:58Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=tunde-nextcloud-router@file
+2025-04-09T23:34:58Z ERR No valid entryPoint for this router routerName=tunde-nextcloud-router@file
+2025-04-09T23:34:58Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=church-crm-router@file
+2025-04-09T23:34:58Z ERR No valid entryPoint for this router routerName=church-crm-router@file
+2025-04-09T23:34:58Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=tunde-nextcloud-router@file
+2025-04-09T23:34:58Z ERR No valid entryPoint for this router routerName=tunde-nextcloud-router@file
+2025-04-09T23:34:58Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=church-crm-router@file
+2025-04-09T23:34:58Z ERR No valid entryPoint for this router routerName=church-crm-router@file
+2025-04-09T23:35:02Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=tunde-nextcloud-router@file
+2025-04-09T23:35:02Z ERR No valid entryPoint for this router routerName=tunde-nextcloud-router@file
+2025-04-09T23:35:02Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=church-crm-router@file
+2025-04-09T23:35:02Z ERR No valid entryPoint for this router routerName=church-crm-router@file
+2025-04-09T23:35:02Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=tunde-nextcloud-router@file
+2025-04-09T23:35:02Z ERR No valid entryPoint for this router routerName=tunde-nextcloud-router@file
+2025-04-09T23:35:02Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=church-crm-router@file
+2025-04-09T23:35:02Z ERR No valid entryPoint for this router routerName=church-crm-router@file
+2025-04-09T23:35:29Z ERR Unable to obtain ACME certificate for domains error="unable to generate a certificate for the domains [*.oxlava.me]: error: one or more domains had a problem:\n[*.oxlava.me] [*.oxlava.me] acme: error presenting token: cloudflare: failed to find zone oxlava.me.: zone could not be found\n" ACME CA=https://acme-v02.api.letsencrypt.org/directory acmeCA=https://acme-v02.api.letsencrypt.org/directory domains=["*.oxlava.me"] providerName=dns-cloudflare.acme routerName=traefik-rtr@docker rule=Host(`board.oxtech.me`)
+2025-04-09T23:36:16Z ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-04-09T23:36:16Z ERR Error while starting server error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-04-09T23:36:16Z ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-04-09T23:36:16Z ERR Error while starting server error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-04-09T23:36:51Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=church-crm-router@file
+2025-04-09T23:36:51Z ERR No valid entryPoint for this router routerName=church-crm-router@file
+2025-04-09T23:36:51Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=tunde-nextcloud-router@file
+2025-04-09T23:36:51Z ERR No valid entryPoint for this router routerName=tunde-nextcloud-router@file
+2025-04-09T23:36:51Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=church-crm-router@file
+2025-04-09T23:36:51Z ERR No valid entryPoint for this router routerName=church-crm-router@file
+2025-04-09T23:36:51Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=tunde-nextcloud-router@file
+2025-04-09T23:36:51Z ERR No valid entryPoint for this router routerName=tunde-nextcloud-router@file
+2025-04-09T23:36:57Z ERR Unable to obtain ACME certificate for domains error="unable to generate a certificate for the domains [*.oxlava.me]: error: one or more domains had a problem:\n[*.oxlava.me] [*.oxlava.me] acme: error presenting token: cloudflare: failed to find zone oxlava.me.: zone could not be found\n" ACME CA=https://acme-v02.api.letsencrypt.org/directory acmeCA=https://acme-v02.api.letsencrypt.org/directory domains=["*.oxlava.me"] providerName=dns-cloudflare.acme routerName=traefik-rtr@docker rule=Host(`board.oxtech.me`)
+2025-04-09T23:39:17Z ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-04-09T23:39:17Z ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-04-09T23:39:17Z ERR Error while starting server error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-04-09T23:39:17Z ERR Error while starting server error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-04-09T23:39:25Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=tunde-nextcloud-router@file
+2025-04-09T23:39:25Z ERR No valid entryPoint for this router routerName=tunde-nextcloud-router@file
+2025-04-09T23:39:25Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=church-crm-router@file
+2025-04-09T23:39:25Z ERR No valid entryPoint for this router routerName=church-crm-router@file
+2025-04-09T23:39:25Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=tunde-nextcloud-router@file
+2025-04-09T23:39:25Z ERR No valid entryPoint for this router routerName=tunde-nextcloud-router@file
+2025-04-09T23:39:25Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=church-crm-router@file
+2025-04-09T23:39:25Z ERR No valid entryPoint for this router routerName=church-crm-router@file
+2025-04-09T23:39:27Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=church-crm-router@file
+2025-04-09T23:39:27Z ERR No valid entryPoint for this router routerName=church-crm-router@file
+2025-04-09T23:39:27Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=tunde-nextcloud-router@file
+2025-04-09T23:39:27Z ERR No valid entryPoint for this router routerName=tunde-nextcloud-router@file
+2025-04-09T23:39:27Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=church-crm-router@file
+2025-04-09T23:39:27Z ERR No valid entryPoint for this router routerName=church-crm-router@file
+2025-04-09T23:39:27Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=tunde-nextcloud-router@file
+2025-04-09T23:39:27Z ERR No valid entryPoint for this router routerName=tunde-nextcloud-router@file
+2025-04-09T23:42:10Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=tunde-nextcloud-router@file
+2025-04-09T23:42:10Z ERR No valid entryPoint for this router routerName=tunde-nextcloud-router@file
+2025-04-09T23:42:10Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=church-crm-router@file
+2025-04-09T23:42:10Z ERR No valid entryPoint for this router routerName=church-crm-router@file
+2025-04-09T23:42:10Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=tunde-nextcloud-router@file
+2025-04-09T23:42:10Z ERR No valid entryPoint for this router routerName=tunde-nextcloud-router@file
+2025-04-09T23:42:10Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=church-crm-router@file
+2025-04-09T23:42:10Z ERR No valid entryPoint for this router routerName=church-crm-router@file

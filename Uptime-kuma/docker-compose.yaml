@@ -12,11 +12,12 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.uptime-kuma.entrypoints=websecure"
-      - "traefik.http.routers.uptime-kuma.rule=Host(`upk.{DOMAINNAME}`)"
-      - "traefik.http.routers.uptime-kuma-secure.tls=true"
-      - "traefik.http.routers.uptime-kuma-secure.service=uptime-kuma"
+      - "traefik.http.routers.uptime-kuma.rule=Host(`upk.${DOMAINNAME}`)"
+      - "traefik.http.routers.uptime-kuma.tls=true"
+      - "traefik.http.routers.uptime-kuma.service=uptime-kuma"
       - "traefik.http.services.uptime-kuma.loadbalancer.server.port=3001"
-      - "traefik.http.routers.uptime-kuma-rtr.middlewares=redirect@file"
+      - "traefik.http.routers.uptime-kuma.middlewares=redirect@file"
+      - "traefik.http.routers.uptime-kuma.tls.certresolver=dns-cloudflare"
 networks:
   traefik:
     external: true

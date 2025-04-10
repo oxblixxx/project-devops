@@ -1,0 +1,6 @@
+http:
+  middlewares:
+    ip-whitelist:
+      ipWhiteList:
+        sourceRange:
+          - "10.0.20.0/24" # Add the IPs or networks you want to be able to access

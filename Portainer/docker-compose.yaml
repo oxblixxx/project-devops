@@ -1,0 +1,18 @@
+services:
+  portainer:
+    image: portainer/portainer-ce:lts
+    container_name: portainer
+    restart: always
+    ports:
+      - "8002:8000"    # Port for Portainer API
+      - "9445:9443"
+      - "9000:9000"    # HTTPS Web UI (Recommended)
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock   # Docker management
+      - ./portainer_data:/data                         # Persistent storage
+    networks:
+      - portainer_net
+
+networks:
+  portainer_net:
+    driver: bridge

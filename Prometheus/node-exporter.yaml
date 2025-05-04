@@ -1,0 +1,13 @@
+services:
+  prom_node_exporter:
+    image: prom/node-exporter:v1.9.1
+    container_name: node_exporter
+    privileged: true
+    command:
+      - '--path.rootfs=/host'
+      - '--web.listen-address=127.0.0.1:9100'
+    network_mode: host
+    pid: host
+    restart: unless-stopped
+    volumes:
+      - '/proc:/host/proc:ro,rslave'

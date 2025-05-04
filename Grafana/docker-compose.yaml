@@ -1,6 +1,6 @@
 services:
   grafana:
-    image: grafana/grafana-enterprise
+    image: grafana/grafana:11.6.1
     container_name: grafana_enterprise
     environment:
       - GF_SECURITY_ADMIN_USER=${GF_SECURITY_ADMIN_USER}
@@ -10,16 +10,9 @@ services:
       - "${DOCKERDIR}/config:/var/lib/grafana"
     restart: unless-stopped
     networks:
-      - traefik
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.grafana.entrypoints=websecure"
-      - "traefik.http.routers.grafana.rule=Host(`graf.${DOMAINNAME}`)"
-      - "traefik.http.routers.grafana.tls=true"
-      - "traefik.docker.network=traefik"
-      - "traefik.http.routers.grafana.middlewares=redirect@file"
-      - "traefik.http.services.grafana.loadbalancer.server.port=3000"
-      - "traefik.http.routers.grafana.tls.certresolver=dns-cloudflare"
+      - grafana
+    ports:
+     - '3005:3000'
 networks:
-  traefik:
+  grafana:
     external: true

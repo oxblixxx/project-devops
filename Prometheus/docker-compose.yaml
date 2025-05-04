@@ -1,0 +1,22 @@
+services:
+  prometheus:
+    image: prom/prometheus:v3.3.0
+    container_name: prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"  # Expose web UI port
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml  # Bind custom config
+      - ./prometheus-data:/prometheus  # Persistent metric storage
+      - ./admin.yml:/etc/prometheus/admin.yml
+    user: '0'
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--web.config.file=/etc/prometheus/admin.yml'
+      - '--storage.tsdb.path=/prometheus'
+    #network_mode: host
+    networks:
+      - prometheus-net  # Use a dedicated network
+networks:
+  prometheus-net:
+    driver: bridge

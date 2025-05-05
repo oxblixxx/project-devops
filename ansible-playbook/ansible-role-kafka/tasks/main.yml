@@ -1,0 +1,68 @@
+---
+- name: Installing andrewrothstein.unarchivedeps
+  ansible.builtin.include_role:
+    name: andrewrothstein.unarchivedeps
+- name: Installing andrewrothstein.bash
+  ansible.builtin.include_role:
+    name: andrewrothstein.bash
+- name: Installing andrewrothstein.temurin
+  ansible.builtin.include_role:
+    name: andrewrothstein.temurin
+- name: Check for kafka installation in {{ kafka_install_dir }}
+  become: true
+  ansible.builtin.stat:
+    path: '{{ kafka_install_dir }}'
+  changed_when: false
+  register: kafka_binary
+- name: Downloading and installing kafka
+  when: not kafka_binary.stat.exists
+  block:
+    - name: Downloading {{ kafka_tgz_url }}
+      become: true
+      become_user: root
+      ansible.builtin.get_url:
+        url: '{{ kafka_tgz_url }}'
+        dest: '{{ kafka_tmp_tgz }}'
+        mode: '644'
+        timeout: '{{ kafka_download_timeout_seconds }}'
+        checksum: '{{ kafka_checksum }}'
+    - name: Mkdir {{ kafka_install_parent_dir }}
+      become: true
+      become_user: root
+      ansible.builtin.file:
+        path: '{{ kafka_install_parent_dir }}'
+        state: directory
+        mode: '755'
+    - name: Unarchive {{ kafka_tmp_tgz }}
+      become: true
+      become_user: root
+      ansible.builtin.unarchive:
+        remote_src: true
+        src: '{{ kafka_tmp_tgz }}'
+        dest: '{{ kafka_install_parent_dir }}'
+        creates: '{{ kafka_install_dir }}'
+  always:
+    - name: Rm {{ kafka_tmp_tgz }}
+      become: true
+      become_user: root
+      ansible.builtin.file:
+        path: '{{ kafka_tmp_tgz }}'
+        state: absent
+- name: Linking {{ kafka_install_link_dir }} to {{ kafka_install_dir }}
+  become: true
+  become_user: root
+  ansible.builtin.file:
+    src: '{{ kafka_install_dir }}'
+    dest: '{{ kafka_install_link_dir }}'
+    state: link
+
+- name: Include kafka in the default path
+  become: true
+  become_user: root
+  with_items:
+    - d: /etc/profile.d
+      f: kafka.sh
+  ansible.builtin.template:
+    src: '{{ item.f }}.j2'
+    dest: '{{ item.d }}/{{ item.f }}'
+    mode: '{{ item.m | default("644") }}'

@@ -39,7 +39,6 @@ services:
       - "traefik.http.routers.traefik-rtr.middlewares=redirect@file"
       - "traefik.http.routers.traefik-rtr.tls.certresolver=dns-cloudflare"
 #,authentik@file"
-#,authentik@file"
 
 networks:
   traefik:

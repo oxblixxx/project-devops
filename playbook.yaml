@@ -2,7 +2,9 @@
 - name: Apply common roles
   hosts: webservers
   roles:
-#  - ansible-playbook/ansible-role-docker
+#    - ansible-playbook/ansible-role-docker
+    - ansible-playbook/ansible-role-redis
+    - ansible-playbook/ansible-role-kafka
 #    - ansible-playbook/services-automate
 
-    - ansible-playbook/ansible-role-mysql
+#    - ansible-playbook/ansible-role-mysql

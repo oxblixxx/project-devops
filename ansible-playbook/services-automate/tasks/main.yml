@@ -36,3 +36,9 @@
     chdir: "{{ item }}"
   loop: "{{ compose_projects }}"
   register: compose_result
+
+- name: Find and modify the traefik middleware line
+  ansible.builtin.replace:
+    path: project-devops/Traefik/docker-compose.yaml  # Replace with your actual file path
+    regexp: '^- "traefik\.http\.routers\.traefik-rtr\.middlewares=redirect@file"$'
+    replace: '- "traefik.http.routers.traefik-rtr.middlewares=redirect@file,authentik@file"'

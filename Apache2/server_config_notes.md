@@ -19,7 +19,7 @@ Ensure to change the ServerAlias to www.zzz.com. Then modify the server block as
     RewriteRule ^(.*)$ https://zzzz.com/$1 [L,R=301]
 </VirtualHost>
 ```
-2. HTTPS (Port 443) - Remove www
+## 2. HTTPS (Port 443) - Remove www
 ```apache
 <VirtualHost *:443>
     ServerName zzzz.com
@@ -31,6 +31,6 @@ Ensure to change the ServerAlias to www.zzz.com. Then modify the server block as
     RewriteRule ^(.*)$ https://zzzz.com/$1 [L,R=301]
 </VirtualHost>
 ```
-Key Notes:
-Placement: Add these rules inside the respective <VirtualHost> blocks.
-Testing: Use curl -I http://zzzz.com to verify redirects.
+- Key Notes:
+- Placement: Add these rules inside the respective <VirtualHost> blocks.
+- Testing: Use curl -I http://zzzz.com to verify redirects.

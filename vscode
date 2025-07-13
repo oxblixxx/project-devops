@@ -1,0 +1,39 @@
+Correct Way to Create Comment Snippets in VS Code
+Open VS Code Snippet Configuration:
+
+Press Ctrl+Shift+P (Windows/Linux) or Cmd+Shift+P (Mac)
+
+Type "Preferences: Configure User Snippets"
+
+Select "New Global Snippets File"
+
+Name it terraform.json (this creates a new snippets file specifically for Terraform)
+
+Add This Code (replace the entire file contents):
+
+json
+{
+  "Big Section Header": {
+    "prefix": "bigheader",
+    "body": [
+      "##########################################",
+      "### ${1:SECTION_NAME}",
+      "##########################################",
+      "$0"
+    ],
+    "description": "Large formatted section header"
+  },
+  "Box Comment": {
+    "prefix": "boxcomment",
+    "body": [
+      "/*",
+      " * ${1:COMMENT_TEXT}",
+      " */",
+      "$0"
+    ],
+    "description": "Box-style block comment"
+  }
+}
+Usage:
+
+In any .tf file, type bigheader then press Tab for a large comment block

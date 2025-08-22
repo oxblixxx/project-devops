@@ -90,3 +90,15 @@
 2025-04-09T23:42:10Z ERR No valid entryPoint for this router routerName=tunde-nextcloud-router@file
 2025-04-09T23:42:10Z ERR EntryPoint doesn't exist entryPointName=websecure-external routerName=church-crm-router@file
 2025-04-09T23:42:10Z ERR No valid entryPoint for this router routerName=church-crm-router@file
+2025-07-17T15:33:02Z ERR The ACME resolve is skipped from the resolvers list error="unable to get ACME account: permissions 664 for acme.json are too open, please use 600" resolver=dns-cloudflare
+2025-07-17T15:33:02Z ERR Router uses a nonexistent certificate resolver certificateResolver=dns-cloudflare routerName=traefik-rtr@docker
+2025-07-17T15:33:49Z ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-07-17T15:33:49Z ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-07-17T15:33:49Z ERR error="close tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-07-17T15:33:49Z ERR error="close tcp [::]:80: use of closed network connection" entryPointName=web
+2025-07-17T15:34:03Z ERR The ACME resolve is skipped from the resolvers list error="unable to get ACME account: permissions 664 for acme.json are too open, please use 600" resolver=dns-cloudflare
+2025-07-17T15:34:06Z ERR Router uses a nonexistent certificate resolver certificateResolver=dns-cloudflare routerName=traefik-rtr@docker
+2025-07-17T15:36:21Z ERR error="accept tcp [::]:80: use of closed network connection" entryPointName=web
+2025-07-17T15:36:21Z ERR error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-07-17T15:36:21Z ERR Error while starting server error="accept tcp [::]:443: use of closed network connection" entryPointName=websecure
+2025-07-17T15:36:21Z ERR Error while starting server error="accept tcp [::]:80: use of closed network connection" entryPointName=web

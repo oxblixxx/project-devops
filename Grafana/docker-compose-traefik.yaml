@@ -5,9 +5,17 @@ services:
     environment:
       - GF_SECURITY_ADMIN_USER=${GF_SECURITY_ADMIN_USER}
       - GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}
+      - GF_SMTP_HOST=${GF_SMTP_HOST}  
+      - GF_SMTP_USER=${GF_SMTP_USER}
+      - GF_SMTP_PASSWORD=${GF_SMTP_PASSWORD}
+      - GF_SMTP_FROM_ADDRESS=${GF_SMTP_FROM_ADDRESS}
+      - GF_SMTP_FROM_NAME=Grafana
+      - GF_SMTP_SKIP_VERIFY=${GF_SMTP_SKIP_VERIFY}
+
     user: "${UID}:${GID}"
     volumes:
       - "${DOCKERDIR}/config:/var/lib/grafana"
+      - "${DOCKERDIR}/grafana.ini:/etc/grafana/grafana.ini"
     restart: unless-stopped
     networks:
       - traefik

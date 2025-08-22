@@ -32,7 +32,7 @@ entryPoints:
         # Use Let's Encrypt DNS-Cloudflare resolver for certificates
         certResolver: dns-cloudflare # Cert resoolver created below
         domains:
-          - main: "*.oxlava.me"  # Main domain for the TLS certification
+          - main: "*.oxtech.me"  # Main domain for the TLS certification
 
 #  web-external:
 #    address: ":81"

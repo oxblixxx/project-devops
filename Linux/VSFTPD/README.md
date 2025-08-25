@@ -45,11 +45,12 @@ Create a vsftpd folder, in it create a `user_conf` directory. This is a per-user
 ```sh
 mkdir -p /etc/vsftpd/user_conf
 ```
-Then in `user_conf` directory, create a file with the user name and put atrributes specific to the user in there.
+Then in `user_conf` directory, create a file with the user name and put atrributes specific to the user in there. For a user [ftpuser](./ftpuser).
 
 ```sh
 touch /etc/vsftpd/user_conf/ftpuser
 ```
+
 
 
 Currently this vsftpd is setup for multiple users,

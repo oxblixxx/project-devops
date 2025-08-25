@@ -38,5 +38,6 @@ Take a backup of the conf file.
 ```sh
 cp /etc/vsftpd.conf /etc/backups/vsftpd.conf.bak
 ```
+THen remove the `vsftpd.conf` file and replace with [vsftpd.conf]().
 
 

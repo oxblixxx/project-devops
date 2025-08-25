@@ -38,6 +38,21 @@ Take a backup of the conf file.
 ```sh
 cp /etc/vsftpd.conf /etc/backups/vsftpd.conf.bak
 ```
-THen remove the `vsftpd.conf` file and replace with [vsftpd.conf](./vsftpd.conf).
+Then remove the `vsftpd.conf` file and replace with [vsftpd.conf](./vsftpd.conf). 
+
+Create a vsftpd folder, in it create a `user_conf` directory. This is a per-user vsftpd configuration.
+
+```sh
+mkdir -p /etc/vsftpd/user_conf
+```
+Then in `user_conf` directory, create a file with the user name and put atrributes specific to the user in there.
+
+```sh
+touch /etc/vsftpd/user_conf/ftpuser
+```
+
+
+Currently this vsftpd is setup for multiple users,
+
 
 

@@ -1,0 +1,7 @@
+[Unit]
+Description=API Runner Service
+StartLimitIntervalSec=0
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/api-call.sh

@@ -44,18 +44,25 @@ If applications require programmatic access to CloudFront or S3:
 Example policy (adjust as needed):
 ```json
 {
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:PutObject",
-        "s3:DeleteObject"
-      ],
-      "Resource": "arn:aws:s3:::your-bucket-name/*"
-    }
-  ]
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Principal": {
+                "AWS": "arn:aws:iam::8xxxxxxx:user/ifollow-app-cli"
+            },
+            "Action": [
+                "s3:PutObject",
+                "s3:DeleteObject",
+                "s3:GetObject"
+            ],
+            "Resource": "arn:aws:s3:::bucket-name/*"
+        }
+    ]
 }
 ```
 
-Once the distribution status changes to Deployed, access objects using the CloudFront domain name (e.g., https://dxxxxxxxxxxxx.cloudfront.net/object-key
+Once the distribution status changes to Deployed, access objects using the CloudFront domain name (e.g., https://dxxxxxxxxxxxx.cloudfront.net/object-key.
+
+However, invalidation is to clear the cache, incase an object has been removed, create an invalidation and set the object path, which could be `/*` and also for error pages, create an HTTP, error page, select the corresponding error code, `NB` error 403 relates with the denied error. Choose `customize error response` to be Yes, then the Response page path should be the url of the image, excluding the bucket name. Correspond HTTP response code to the selected HTTP error code. Then create!

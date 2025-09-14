@@ -38,4 +38,70 @@ Basically set key and name, leave everything as default
 
 ## 📌 Summary  
 - For **metrics that don’t change often** (CPU cores), use **Last (not null)** and adjust panel **Relative time**.  
-- For **real-time metrics** (logged-in users), ensure the item exists in Zabbix (`system.users.num`), test it, verify in **Latest data**, then select it in Grafana.  
+- For **real-time metrics** (logged-in users), ensure the item exists in Zabbix (`system.users.num`), test it, verify in **Latest data**, then select it in Grafana.
+
+
+ 📘 Grafana – Grouping Hosts with Zabbix
+🔹 Why Group Hosts?
+
+Grouping hosts makes it easier to organize dashboards:
+
+Linux vs Windows servers
+
+Production vs Staging environments
+
+Application-specific groups
+
+This allows dashboards to filter metrics by host group or host.
+
+🔹 Steps to Group Hosts
+1. In Zabbix
+
+Create Host Groups (e.g., Linux Servers, Windows Servers).
+
+Assign each host to the appropriate group.
+
+2. In Grafana
+Create a Host Group Variable
+
+Open your dashboard → Settings → Variables → Add variable.
+
+Name: hostgroup
+
+Type: Query
+
+Data source: Zabbix
+
+Query type: Group
+
+Default value: Linux Servers (so dashboard defaults to Linux)
+
+Create a Host Variable (Optional)
+
+Add another variable → Name: hostname
+
+Type: Query
+
+Data source: Zabbix
+
+Query type: Host
+
+Group: $hostgroup
+
+3. Use Variables in Panels
+
+In panel queries, set:
+
+Group = $hostgroup
+
+Host = $hostname (optional)
+
+This makes the dashboard dynamic.
+
+🔹 Result
+
+Dashboard defaults to Linux Servers.
+
+You can switch to Windows Servers from the dropdown.
+
+You can drill down to a specific host if needed.

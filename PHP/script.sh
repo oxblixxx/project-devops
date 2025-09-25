@@ -16,8 +16,17 @@ sudo apt update -y
 
 # Install PHP and common extensions
 sudo apt install -y php$PHP_VERSION php$PHP_VERSION-cli php$PHP_VERSION-common \
-        php$PHP_VERSION-bcmath php$PHP_VERSION-mbstring php$PHP_VERSION-xml \
-        php$PHP_VERSION-zip php$PHP_VERSION-gd
+    php$PHP_VERSION-bcmath php$PHP_VERSION-mbstring php$PHP_VERSION-xml \
+    php$PHP_VERSION-zip php$PHP_VERSION-gd php$PHP_VERSION-curl \
+    php$PHP_VERSION-intl php$PHP_VERSION-imap php$PHP_VERSION-mysql \
+    php$PHP_VERSION-xsl php$PHP_VERSION-exif php$PHP_VERSION-sqlite3 \
+    php$PHP_VERSION-gettext
+
+sudo apt install -y libapache2-mod-php$PHP_VERSION
+# DISMOD PREVIOUSLY INSTALLED PHP VERSION
+#sudo a2dismod php8.2
+sudo a2enmod php$PHP_VERSION
+sudo systemctl restart apache2
 
 # Verify installation
 php -v

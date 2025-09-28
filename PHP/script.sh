@@ -5,7 +5,13 @@ set -e
 PHP_VERSION=${1:-"8.3"}
 
 echo "Installing PHP $PHP_VERSION on Ubuntu/Debian..."
+    "Installing PHP $PHP_VERSION on Ubuntu/Debian..."
+    "Installing PHP $PHP_VERSION on Ubuntu/Debian..."
+    "Installing PHP $PHP_VERSION on Ubuntu/Debian..."
+    "Installing PHP $PHP_VERSION on Ubuntu/Debian..."
+    "Installing PHP $PHP_VERSION on Ubuntu/Debian..."
 
+sleep 2
 # Update system
 sudo apt update -y
 
@@ -24,9 +30,12 @@ sudo apt install -y php$PHP_VERSION php$PHP_VERSION-cli php$PHP_VERSION-common \
 
 sudo apt install -y libapache2-mod-php$PHP_VERSION
 # DISMOD PREVIOUSLY INSTALLED PHP VERSION
+# IF THERE IS A PREVIOUSLY INSTALLED PHP VERSION PRIOR
+# TO THIS SCRIPT WAS RUN, A2DISMOD WILL BE NEEDED TO RUN
+# ON THE SERVER.
 #sudo a2dismod php8.2
 sudo a2enmod php$PHP_VERSION
 sudo systemctl restart apache2
-
+sleep 2
 # Verify installation
 php -v

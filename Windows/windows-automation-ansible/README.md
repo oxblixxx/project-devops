@@ -44,7 +44,14 @@ Create a new user, set password for the user as well.
 Ensure your local user (e.g. ansibleadmin) is in the Administrators group:
 
 ```powershell
-Add-LocalGroupMember -Group "Administrators" -Member "ansibleadmin"
+# Define username and password
+$username = "ansibleuser"
+$password = ConvertTo-SecureString "MyStrongP@ssw0rd!" -AsPlainText -Force
+
+# Create the user
+New-LocalUser -Name $username -Password $password -FullName "Ansible User" -Description "User for Ansible WinRM access"
+
+Add-LocalGroupMember -Group "Administrators" -Member "ansibleuser"
 ```
 
 # 🧪 Ansible Test Command

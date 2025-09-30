@@ -26,7 +26,7 @@ sudo apt install -y php$PHP_VERSION php$PHP_VERSION-cli php$PHP_VERSION-common \
     php$PHP_VERSION-zip php$PHP_VERSION-gd php$PHP_VERSION-curl \
     php$PHP_VERSION-intl php$PHP_VERSION-imap php$PHP_VERSION-mysql \
     php$PHP_VERSION-xsl php$PHP_VERSION-exif php$PHP_VERSION-sqlite3 \
-    php$PHP_VERSION-gettext
+    php$PHP_VERSION-gettext1
 
 sudo apt install -y libapache2-mod-php$PHP_VERSION
 # DISMOD PREVIOUSLY INSTALLED PHP VERSION

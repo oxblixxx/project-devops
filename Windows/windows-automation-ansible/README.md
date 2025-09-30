@@ -17,7 +17,7 @@ Enable PowerShell Remoting (WinRM) on a Windows host to manage it via Ansible.
 
 ```powershell
 # SET NEWROK PROFILE TO PRIVATE
-Set-NetConnectionProfile -InterfaceAlias "Ethernet0" -NetworkCategory Private
+Set-NetConnectionProfile -InterfaceAlias "Ethernet" -NetworkCategory Private
 
 # Enable WinRM
 Enable-PSRemoting -Force

@@ -5,7 +5,12 @@
 
 # Apache Redirect: `www.zzzz.com` → `zzzz.com`
 Ensure to change the ServerAlias to www.zzz.com. Then modify the server block as shown below
+Comment the default rewrite rules that certbot added 
+```
+#RewriteCond %{SERVER_NAME} =iptcertification.com
+#RewriteRule ^ https://%{SERVER_NAME}%{REQUEST_URI} [END,NE,R=permanent]
 
+```
 ## 1. HTTP (Port 80) - Redirect to HTTPS + non-www
 ```apache
 <VirtualHost *:80>

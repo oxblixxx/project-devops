@@ -1,0 +1,13 @@
+# roles/zabbix_agent/defaults/main.yml
+zabbix_version: "7.2.4"
+zabbix_server_ip: "10.0.1.120"
+zabbix_source_ip: "10.0.1.132"
+zabbix_file_path: "/etc/zabbix"
+# Linux
+zabbix_linux_url: "https://cdn.zabbix.com/zabbix/binaries/stable/7.2/7.2.4/zabbix_agent-7.2.4-linux-3.0-amd64-static.tar.gz"
+zabbix_linux_install_dir: "/opt/zabbix"
+
+
+# Windows
+zabbix_windows_url: "https://cdn.zabbix.com/zabbix/binaries/stable/7.2/7.2.10/zabbix_agent-7.2.10-windows-amd64.zip"
+zabbix_windows_install_dir: "C:\\Program Files\\Zabbix Agent 2"

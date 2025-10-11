@@ -1,0 +1,141 @@
+---
+- name: Ensure install directory exists
+  win_file:
+    path: "{{ zabbix_windows_install_dir }}"
+    state: directory
+
+- name: Get .NET Framework release key
+  win_shell: |
+    $release = (Get-ItemProperty "HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full").Release
+    Write-Output $release
+  register: netfx_release
+  changed_when: false
+  ignore_errors: true
+
+- name: Set .NET release version fact
+  set_fact:
+    netfx_release_version: "{{ netfx_release.stdout | default('0') }}"
+
+- name: Show .NET Release version in output
+  debug:
+    msg: "Detected .NET Release Key: {{ netfx_release_version }}"
+
+- name: Download .NET Framework 4.8 installer
+  win_get_url:
+    url: https://go.microsoft.com/fwlink/?LinkId=2085155
+    dest: Downloads\ndp48-web.exe
+  when: "(netfx_release_version | int) < 528040"
+
+- name: Install .NET Framework 4.8
+  win_package:
+    path: Downloads\ndp48-web.exe
+    arguments: /quiet /norestart
+    state: present
+  when: "(netfx_release_version | int) < 528040"
+
+- name: Reboot if .NET was installed
+  win_reboot:
+    reboot_timeout: 600
+    post_reboot_delay: 420
+  when: "(netfx_release_version | int) < 528040"
+
+- name: Install Zabbix Agent 2 via Chocolatey
+  chocolatey.chocolatey.win_chocolatey:
+    name: zabbix-agent2
+    version: 7.4.0
+    state: present
+
+- name: Configure source IP
+  win_lineinfile:
+    path: "{{ zabbix_windows_install_dir }}\\zabbix_agent2.conf"
+    regexp: '^# SourceIP='
+    line: "SourceIP={{ zabbix_source_ip }}"
+
+- name: Configure server IP
+  win_lineinfile:
+    path: "{{ zabbix_windows_install_dir }}\\zabbix_agent2.conf"
+    regexp: '^# Server='
+    line: "Server={{ zabbix_server_ip }}"
+
+- name: Configure server active IP
+  win_lineinfile:
+    path: "{{ zabbix_windows_install_dir }}\\zabbix_agent2.conf"
+    regexp: '^# ServerActive='
+    line: "ServerActive={{ zabbix_server_ip }}"
+
+- name: Set hostname
+  win_lineinfile:
+    path: "{{ zabbix_windows_install_dir }}\\zabbix_agent2.conf"
+    regexp: '^# Hostname='
+    line: "Hostname={{ ansible_hostname }}"
+
+- name: Start Zabbix Agent 2 service
+  win_service:
+    name: "Zabbix Agent 2"
+    state: started
+    start_mode: auto
+
+- name: Restart Zabbix Agent 2 service
+  win_service:
+    name: "Zabbix Agent 2"
+    state: restarted
+
+- name: Verify Zabbix Agent 2 service status
+  win_service:
+    name: "Zabbix Agent 2"
+  register: zabbix_service_status
+
+- name: Show Zabbix service status
+  debug:
+    msg: "Zabbix Agent 2 service is {{ zabbix_service_status.state }}"
+
+- name: Check Zabbix Agent 2 version
+  win_shell: |
+    & "{{ zabbix_windows_install_dir }}\zabbix_agent2.exe" --version
+  register: zabbix_version
+  changed_when: false
+
+- name: Display Zabbix Agent 2 version
+  debug:
+    msg: "{{ zabbix_version.stdout }}"
+
+- name: Run host.create API call
+  uri:
+    url: "http://10.0.1.120:84/api_jsonrpc.php"
+    method: POST
+    headers:
+      Content-Type: "application/json"
+      Authorization: "Bearer f79814e3cf14675c4597fbe69ee6fbcd"
+    body: |
+      {
+        "jsonrpc": "2.0",
+        "method": "host.create",
+        "params": {
+          "host": "{{ ansible_hostname }}",
+          "interfaces": [
+            {
+              "type": 1,
+              "main": 1,
+              "useip": 1,
+              "ip": "{{ ansible_host }}",
+              "dns": "",
+              "port": "10050"
+            }
+          ],
+          "groups": [
+            { "groupid": "2" }
+          ],
+          "tags": [
+            { "tag": "host-name", "value": "windows-11-server" }
+          ],
+          "templates": [
+            { "templateid": "10001" }
+          ]
+        },
+        "id": 1
+      }
+    body_format: json
+    return_content: yes
+    status_code: 200
+  register: zabbix_response
+  delegate_to: localhost

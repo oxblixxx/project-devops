@@ -1,0 +1,7 @@
+# ansible-script/linux-zabbix-script/linux_zabbix_playbook.yml
+
+- name: Install Zabbix Agent on Linux
+  hosts: linux_zabbix
+  become: true
+  roles:
+    - zabbix_agent

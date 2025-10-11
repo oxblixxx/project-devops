@@ -1,0 +1,138 @@
+---
+#- name: Display SourceIP using default private IP
+#  ansible.builtin.shell: |
+#    echo "SourceIP={{ ansible_default_ipv4.address }}"
+#  register: sourceip_output
+
+#- name: Print SourceIP line
+#  ansible.builtin.debug:
+#    msg: "{{ sourceip_output.stdout }}"
+
+#- name: Write to file using copy module
+#  copy:
+#    content: "Hello World"
+#    dest: /home/tunde/8.txt
+
+#- name: Print test message
+#  ansible.builtin.shell: echo "Hello from Linux host"
+
+#- name: Write success marker
+#  ansible.builtin.shell: |
+#    echo "Zabbix instasdsdll succeeded on $(hostname) at $(date)" | tee /var/log/zabbix_install_success.log
+
+#- name: Write test file to confirm deployment
+#  ansible.builtin.shell: echo "Zabbix test deployment on $(hostname)" | tee /tmp/zabbix_test.log
+
+- name: Download Zabbix release package
+  ansible.builtin.get_url:
+    url: https://repo.zabbix.com/zabbix/7.2/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.2+ubuntu24.04_all.deb
+    dest: /tmp/zabbix-release_latest_7.2+ubuntu24.04_all.deb
+
+- name: Install Zabbix release package
+  ansible.builtin.apt:
+    deb: /tmp/zabbix-release_latest_7.2+ubuntu24.04_all.deb
+    state: present
+
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Install Zabbix Agent
+  ansible.builtin.apt:
+    name: zabbix-agent
+    state: present
+
+- name: Ensure Zabbix Agent is started
+  ansible.builtin.systemd:
+    name: zabbix-agent
+    state: restarted
+    enabled: yes
+
+- name: Configure source IP
+  lineinfile:
+    path: "/etc/zabbix/zabbix_agentd.conf"
+    regexp: '^# SourceIP='
+    line: "SourceIP={{ ansible_default_ipv4.address }}"
+
+- name: Configure server IP
+  lineinfile:
+    path: "{{ zabbix_file_path }}/zabbix_agentd.conf"
+    regexp: '^Server='
+    line: "Server={{ zabbix_server_ip }}"
+
+- name: Configure server active IP
+  lineinfile:
+    path: "{{ zabbix_file_path }}/zabbix_agentd.conf"
+    regexp: '^ServerActive='
+    line: "ServerActive={{ zabbix_server_ip }}"
+
+- name: Set hostname
+  lineinfile:
+    path: "{{ zabbix_file_path }}/zabbix_agentd.conf"
+    regexp: '^Hostname='
+    line: "Hostname={{ ansible_hostname }}"
+
+#- name: Create systemd service
+#  template:
+#    src: zabbix-agent.service.j2
+#    dest: /etc/systemd/system/zabbix-agent.service
+
+- name: Reload systemd
+  systemd:
+    daemon_reload: yes
+
+- name: Enable and start Zabbix agent
+  service:
+    name: zabbix-agent
+    enabled: yes
+    state: started
+
+- name: Run host.create API call
+  uri:
+    url: "http://10.0.1.120:84/api_jsonrpc.php"
+    method: POST
+    headers:
+      Content-Type: "application/json"
+      Authorization: "Bearer f79814e3cf14675c4597fbe69ee6fbcd"
+    body: |
+      {
+        "jsonrpc": "2.0",
+        "method": "host.create",
+        "params": {
+          "host": "{{ ansible_hostname }}",
+          "interfaces": [
+            {
+              "type": 1,
+              "main": 1,
+              "useip": 1,
+              "ip": "{{ ansible_default_ipv4.address }}",
+              "dns": "",
+              "port": "10050"
+            }
+          ],
+          "groups": [
+            { "groupid": "2" }
+          ],
+          "tags": [
+            { "tag": "host-name", "value": "linux-server" }
+          ],
+          "templates": [
+            { "templateid": "10001" }
+          ]
+        },
+        "id": 1
+      }
+    body_format: json
+    return_content: yes
+    status_code: 200
+  register: zabbix_response
+
+- name: Check if UFW is active
+  command: ufw status
+  register: ufw_status
+  changed_when: false
+
+- name: Allow Zabbix Agent port (10050/tcp) if UFW is active
+  command: ufw allow 10050/tcp
+  when: "'Status: active' in ufw_status.stdout"
+  notify: Reload UFW

@@ -1,0 +1,8 @@
+# ansible-script/linux-zabbix-script/linux_zabbix_playbook.yml
+
+- name: Install Zabbix Agent on Windows
+  hosts: windows_zabbix, windows_11_zabbix
+#  become: true
+  gather_facts: yes
+  roles:
+    - zabbix_agent

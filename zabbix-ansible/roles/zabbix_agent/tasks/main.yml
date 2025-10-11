@@ -1,0 +1,13 @@
+---
+
+- name: Debug ansible_system
+  debug:
+    var: ansible_system
+
+- name: Include Windows tasks
+  include_tasks: windows.yml
+  when: ansible_system in ['Windows', 'Win32NT']
+
+- name: Include Debian tasks
+  include_tasks: debian.yml
+  when: ansible_os_family == 'Debian'

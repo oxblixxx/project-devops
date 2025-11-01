@@ -36,3 +36,66 @@ server {
         proxy_cache_bypass $http_upgrade;
     }
 }
+
+
+
+
+
+
+## LARAVEL APP
+server {
+    listen 80;
+    server_name parkourfederation.asia;
+    return 301 https://parkourfederation.asia$request_uri;
+}
+
+server {
+    listen 80;
+    server_name www.parkourfederation.asia;
+    return 301 https://parkourfederation.asia$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name www.parkourfederation.asia;
+
+    ssl_certificate /etc/letsencrypt/live/parkourfederation.asia/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/parkourfederation.asia/privkey.pem;
+
+    return 301 https://parkourfederation.asia$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    server_name parkourfederation.asia;
+
+    root /var/www/Parkour_web/public;
+    index index.php index.html;
+
+    ssl_certificate /etc/letsencrypt/live/parkourfederation.asia/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/parkourfederation.asia/privkey.pem;
+
+    # Log files
+    access_log /var/log/nginx/Parkour_web_access.log;
+    error_log /var/log/nginx/Parkour_web_error.log;
+
+    # Handle static files
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    # PHP-FPM handler
+    location ~ \.php$ {
+        include snippets/fastcgi-php.conf;
+        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
+    # Security tweaks
+    location ~ /\.ht {
+        deny all;
+    }
+}

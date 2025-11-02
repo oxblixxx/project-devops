@@ -1,0 +1,7 @@
+This works well for email notifications
+```
+Alert: CPU Utilization High 🚨
+Instance: {{ $labels.instance }}
+Current Value: {{ printf "%.2f" $values.B }}
+Threshold: > 90%
+```

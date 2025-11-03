@@ -53,3 +53,14 @@ ALTER USER postgres WITH PASSWORD 'Y8Xxxxxxxxxx';
 Change peer → md5 (or scram-sha-256 if you want stronger hashing):
 
 local   all             postgres                                md5
+
+
+
+```sh
+CREATE DATABASE grafana;
+CREATE USER grafana WITH PASSWORD 'your_secure_password';
+GRANT ALL PRIVILEGES ON DATABASE grafana_new TO grafana_new;
+ALTER SCHEMA public OWNER TO grafana_new;
+GRANT ALL PRIVILEGES ON DATABASE grafana_new TO grafana_new;
+GRANT ALL PRIVILEGES ON SCHEMA public TO grafana_new;
+```

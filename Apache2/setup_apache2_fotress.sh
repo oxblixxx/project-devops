@@ -33,8 +33,7 @@ Header always set Referrer-Policy "strict-origin-when-cross-origin"
 Header always set X-Permitted-Cross-Domain-Policies "none"
 Header always unset X-Powered-By
 #Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), fullscreen=(self)"
-Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline'; frame-ancestors 'none'"
+Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), fullscreen=(self)"Header always set Content-Security-Policy "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://stackpath.bootstrapcdn.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://stackpath.bootstrapcdn.com https://code.jquery.com;"
 # -- END fortress headers --
 EOF
 

@@ -84,7 +84,8 @@ Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), 
 
 Content Security Policy (CSP)
 NOTE: This is strict. Expect to tweak for real apps (CDNs, analytics, etc).
-Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline'; frame-ancestors 'none'"
+Header always set Content-Security-Policy "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://stackpath.bootstrapcdn.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://stackpath.bootstrapcdn.com https://code.jquery.com;"
+#Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline'; frame-ancestors 'none'"
 ```
 
 ### 2.2 Make sure headers module is enabled

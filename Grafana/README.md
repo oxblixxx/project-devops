@@ -44,58 +44,43 @@ Basically set key and name, leave everything as default
  📘 Grafana – Grouping Hosts with Zabbix
 🔹 Why Group Hosts?
 
-Grouping hosts makes it easier to organize dashboards:
+# Grouping hosts makes it easier to organize dashboards:
 
-Linux vs Windows servers
+- Linux vs Windows servers
 
-Production vs Staging environments
+- Production vs Staging environments
 
-Application-specific groups
+- Application-specific groups
 
 This allows dashboards to filter metrics by host group or host.
 
 🔹 Steps to Group Hosts
 1. In Zabbix
-
-Create Host Groups (e.g., Linux Servers, Windows Servers).
-
-Assign each host to the appropriate group.
+- Create Host Groups (e.g., Linux Servers, Windows Servers).
+- Assign each host to the appropriate group.
 
 2. In Grafana
-Create a Host Group Variable
+- Create a Host Group Variable
+- Open your dashboard → Settings → Variables → Add variable.
+   - Name: hostgroup
+   - Type: Query
+   - Data source: Zabbix
+   - Query type: Group
+   - Default value: Linux Servers (so dashboard defaults to Linux)
+   - Create a Host Variable (Optional)
 
-Open your dashboard → Settings → Variables → Add variable.
-
-Name: hostgroup
-
-Type: Query
-
-Data source: Zabbix
-
-Query type: Group
-
-Default value: Linux Servers (so dashboard defaults to Linux)
-
-Create a Host Variable (Optional)
-
-Add another variable → Name: hostname
-
-Type: Query
-
-Data source: Zabbix
-
-Query type: Host
-
-Group: $hostgroup
+- Add another variable → Name: hostname
+   - Type: Query
+   - Data source: Zabbix
+   - Query type: Host
+   - Group: $hostgroup
 
 3. Use Variables in Panels
 
 In panel queries, set:
 
-Group = $hostgroup
-
-Host = $hostname (optional)
-
+- Group = $hostgroup
+- Host = $hostname (optional)
 This makes the dashboard dynamic.
 
 🔹 Result

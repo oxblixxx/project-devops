@@ -213,3 +213,130 @@ TASK ERROR: KVM virtualisation configured, but not available. Either disable in 
 I go this error and the fix was simply to go to the bios of my baremetal and enable hypervisor. Go to SEcurity > System security, the save and restart the baremetal.
 
 Download cloud init images `https://cloud-images.ubuntu.com/`
+
+
+
+
+#### HERE IS STEPS FOR MY PROXMOX HOMELAB ON MY HARDWARE
+Proxmox Lab on Legacy Hardware
+This document describes how I built my Proxmox homelab  on an older host without working KVM hardware virtualization.
+
+```sh
+1. Host Overview and Limits
+Hardware: AMD Athlon II X2 (2 cores), ~8 GB RAM.​
+
+Virtualization: AMD‑V present but KVM acceleration not usable for guests; VMs run with software emulation.​
+```
+
+
+2. Fixing KVM Errors on Old CPUs
+Symptom
+Starting any VM shows:
+
+TASK ERROR: KVM virtualisation configured, but not available. Either disable in VM configuration or enable in BIOS.​
+
+or:
+
+kvm: CPU model 'host' requires KVM or HVF in the task log.
+
+Diagnosis
+On the Proxmox node:
+
+bash
+egrep -i 'vmx|svm' /proc/cpuinfo   # shows svm (AMD‑V present)
+lsmod | egrep 'kvm'               # shows kvm_amd and kvm
+These confirm the CPU supports virtualization, but the platform still cannot expose working KVM to guests.
+
+Workaround (per VM)
+In the VM configuration:
+
+Disable hardware virtualization
+
+VM → Options → KVM hardware virtualization → set to No.
+
+Use a generic CPU model
+
+VM → Hardware → Processors:
+
+Type = kvm64 not host.
+
+Result: VMs start successfully using pure QEMU emulation, at the cost of performance.
+
+3. Using Ubuntu Cloud Images Instead of Installer ISOs
+Previously I had full live server iso, so I had to install a cloud img. [Cloud images](https://cloud-images.ubuntu.com/) are preinstalled minimal systems designed for automation and Cloud‑Init.
+
+Downloaded
+For Ubuntu 22.04 (Jammy) AMD64:
+Download jammy-server-cloudimg-amd64.img from the Jammy cloud-images directory.
+Upload and Import
+Upload to ISO storage:
+Datacenter → node → local (directory) → ISO Images → Upload jammy-server-cloudimg-amd64.img.
+
+Import into LVM storage as a VM disk:
+
+```sh
+qm importdisk <VMID> /var/lib/vz/template/iso/jammy-server-cloudimg-amd64.img local-lvm
+Replace <VMID> with the VM number.
+```
+
+Attach Disk and Fix PXE Loop
+Symptom
+
+Console shows: “Boot from Hard Disk… not a bootable disk… iPXE… Nothing to boot; No such file or directory”, looping.
+
+Cause
+
+The cloud image was attached as a CD/DVD instead of a boot disk, so BIOS falls back to PXE.
+
+Fix
+
+VM → Hardware → Remove the CD/DVD that points to jammy-server-cloudimg-amd64.img.
+
+In Hardware, select the imported unused disk (e.g. vm-100-disk-1), click Edit / Add → Existing Disk, and:
+
+Bus/Device: SCSI 0 on VirtIO SCSI single.
+
+VM → Options → Boot Order:
+
+Put the SCSI0 cloud-image disk first.
+
+
+4. Enabling Login with Cloud‑Init
+Ubuntu cloud images do not ship with a default password; password login was enabled and credentials must be set by Cloud‑Init.
+
+Add Cloud‑Init Drive
+VM → Hardware → Add → CloudInit Drive.
+
+Bus/Device: IDE 0 (simple and safe).​
+
+Storage: local (directory storage is fine for this tiny drive).
+
+Now the Cloud‑Init tab no longer shows “No CloudInit Drive found”.
+
+Configure User and Regenerate Image
+VM → Cloud‑Init tab → Edit:
+
+User: e.g. ubuntu or your name.
+
+Password: set a lab password.
+
+(Optional) set static IP, DNS, and SSH public key.
+
+Click Regenerate Image on the Cloud‑Init tab to rebuild the config ISO.
+
+Power‑cycle the VM:
+
+Shutdown (if running) → Start again. Cloud‑Init reads the config only at boot.
+
+Result: log in on the console with the user/password you configured; SSH login with your key also works if provided.
+
+5. Storage Layout: local vs local-lvm
+local (directory)
+
+Use for ISO images, cloud images before import, templates, and small Cloud‑Init drives.
+
+local-lvm (LVM-thin)
+
+Use for VM system and data disks (including imported cloud-image disks). Supports snapshots and efficient thin provisioning.
+
+This layout keeps the root filesystem from filling and makes VM management easier.

@@ -210,4 +210,4 @@ Just tell me.
 TASK ERROR: KVM virtualisation configured, but not available. Either disable in VM configuration or enable in BIOS.
 ```
 
-I go this error and the fix was simply to go to the bios of my baremetal and enable hypervisor
+I go this error and the fix was simply to go to the bios of my baremetal and enable hypervisor. Go to SEcurity > System security, the save and restart the baremetal

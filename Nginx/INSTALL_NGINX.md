@@ -1,0 +1,1 @@
+Installing Nginx with the apt provided installs outdated version, so you need to add Nginx apt repository to install the updated version. Install from this [Nginx_Docs](https://nginx.org/en/linux_packages.html). Choose the distro. 

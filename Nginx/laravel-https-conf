@@ -1,0 +1,67 @@
+# /etc/nginx/sites-available/laravel-site.conf
+# ---------------------- Laravel (80/443) ----------------------
+server {
+    listen 80;
+    server_name example.com;
+    return 301 https://$server_name$request_uri;
+}
+
+server {
+    listen 443 ssl http2;
+    server_name example.com;
+
+    # SSL (Certbot)
+    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+
+    # Fortress protections
+    limit_req zone=global_rate burst=20 nodelay;
+    limit_conn global_conn 20;
+    expires $expires;
+
+    # HSTS
+    add_header Strict-Transport-Security "max-age=63072000; includeSubDomains; preload" always;
+
+    root /var/www/example.com/public;
+    index index.php;
+
+    # Error handling
+    fastcgi_intercept_errors on;
+    error_page 400 401 403 404 405 /40x.html;
+    error_page 500 502 503 504 /50x.html;
+
+    location = /40x.html {
+        internal;
+        default_type text/html;
+        return 404 "<h1>404 - Page Not Found</h1><p>The requested resource could not be found.</p>";
+    }
+
+    location = /50x.html {
+        internal;
+        default_type text/html;
+        return 500 "<h1>500 - Server Error</h1><p>Our servers encountered an issue. Please try again.</p>";
+    }
+
+    # Laravel routing
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    # PHP-FPM (optimized)
+    location ~ \.php$ {
+        include fastcgi_params;
+        fastcgi_param SCRIPT_FILENAME $realpath_root$fastcgi_script_name;
+        fastcgi_param DOCUMENT_ROOT $realpath_root;
+        fastcgi_index index.php;
+        fastcgi_pass unix:/run/php/php8.3-fpm.sock;
+        fastcgi_buffers 16 16k;
+        fastcgi_buffer_size 32k;
+        fastcgi_read_timeout 300;
+        fastcgi_send_timeout 300;
+    }
+
+    # Security - block sensitive files
+    location ~ /\.(?!well-known).* { deny all; }
+    location ~* /(composer\.(json|lock)|artisan|package\.json|webpack\.mix\.js|\.env)$ { deny all; }
+    location ~* ^/(storage|uploads|files)/.*\.php$ { deny all; }
+}

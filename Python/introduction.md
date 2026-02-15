@@ -12,3 +12,12 @@ Python is a high-level, interpreted programming language. It is known for its **
 - **Data Science & Machine Learning**: NumPy, Pandas, TensorFlow  
 - **Automation & DevOps**: Scripting, cloud SDKs  
 - **Desktop Applications**: Tkinter, PyQt
+
+### Print
+
+The `print()` function outputs data. Example:
+
+```python
+print("hello world")
+hello world
+```

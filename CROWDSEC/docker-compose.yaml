@@ -1,0 +1,41 @@
+services:
+  crowdsec:
+    image: crowdsecurity/crowdsec:v1.6.8
+    container_name: crowdsec
+    environment:
+      GID: "0"
+      COLLECTIONS: "crowdsecurity/apache2 crowdsecurity/linux"
+    ports:
+      - "8089:8080"
+      - "6061:6060"
+    volumes:
+      - ./acquis.yaml:/etc/crowdsec/acquis.yaml
+      - ./config/db:/var/lib/crowdsec/data/
+      - ./config/config:/etc/crowdsec/
+      - /var/log/apache2:/var/log/apache2:ro
+      - /var/log/auth.log:/var/log/auth.log:ro
+      - /var/log/syslog:/var/log/syslog:ro
+      - /var/log/kern.log:/var/log/kern.log:ro
+      - /var/log/ufw.log:/var/log/ufw.log:ro
+      - /var/log/mail.log:/var/log/mail.log:ro
+    networks:
+      - crowdsec
+    restart: unless-stopped
+  dashboard:
+    build: .
+    container_name: crowdsec-dashboard
+    ports:
+      - "3005:3000"
+    environment:
+      MB_DB_FILE: /data/metabase.db
+    volumes:
+      - ./metabase-data:/data
+    depends_on:
+      - crowdsec
+    networks:
+      - crowdsec
+    restart: unless-stopped
+
+networks:
+  crowdsec:
+    external: true

@@ -1,0 +1,13 @@
+filenames:
+  - /var/log/apache2/*.log
+labels:
+  type: apache2
+---
+filenames:
+  - /var/log/auth.log
+  - /var/log/syslog
+  - /var/log/kern.log
+  - /var/log/ufw.log
+  - /var/log/mail.log
+labels:
+  type: syslog

@@ -1,0 +1,38 @@
+## THIS IS A DOCKER-COMPOSE FILE FOR A LARAVEL APPLICATION USING PHP-FPM AND NGINX.
+## THIS IS CONFIGURED FOR A STAGING ENVIRONMENT, WHERE THE APP WILL EXPOSED ON A PORT 85.
+version: "3"
+services:
+  # PHP Service
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel_app
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: prod
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www # Mount the current directory to /var/www in the container
+      - ./.docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - app-network
+
+  # Nginx Service
+  webserver:
+    image: nginx-staging
+    container_name: webserver
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "85:80"
+    volumes:
+      - ./:/var/www # Mount the current directory to /var/www in the container
+      - ./.docker/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - app-network
+networks:
+  app-network:
+    driver: bridge

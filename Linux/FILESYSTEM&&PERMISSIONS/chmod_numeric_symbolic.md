@@ -264,6 +264,9 @@ By default:
 
 Files do not get execute permission automatically.
 
+
 Execute permission must be added manually:
 
 chmod +x script.sh
+
+For further study consult [this](https://linuxize.com/post/chmod-command-in-linux/), [this](https://www.cyberciti.biz/faq/unix-linux-bsd-chmod-numeric-permissions-notation-command/) and [these](https://cavecreekcoffee.com/linux-guides/linux-chmod-command-complete-guide-with-real-world-examples/). Consult this [youtube-playlist](https://www.youtube.com/watch?v=bzSlGDlRfAc&list=PLXEcKYHTGBdTmTXd2oB6bSwHWdW6V9Lq3)

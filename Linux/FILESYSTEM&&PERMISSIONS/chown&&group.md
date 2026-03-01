@@ -110,3 +110,5 @@ Save and restart SSH service:
 ```sh
 sudo systemctl restart sshd
 ```
+
+Consult this [youtube-video](https://www.youtube.com/watch?v=GnlgAD8-GhE) and this [blog](https://linuxvox.com/blog/linux-group-membership/) for more.

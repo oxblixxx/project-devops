@@ -220,7 +220,223 @@ systemctl reload nginx
 ```
 After restart, the phpconf showed this:
 
+
+## PHP-FPM “Too Many Open Files” Incident Documentation
+1. Overview
+
+An issue occurred on the production server where PHP requests failed and the application became inaccessible intermittently. Investigation revealed that the PHP-FPM service reached the system limit for open file descriptors, causing requests to fail showing on the browser the message below, upon refresh it works and the error reoccurs.
+> No input file specified.
+
+The issue was resolved by increasing the file descriptor limit (nofile) for PHP-FPM via systemd service overrides.
+
 ```sh
 Local Value  => /var/lib/php/sessions
 Master Value => /var/lib/php/sessions
 ```
+2. Error Observed
+
+The error appeared in the Nginx error logs:
+
+```sh
+FastCGI sent in stderr: "PHP message: PHP Warning: PHP Request Startup: 
+Failed to open stream: Too many open files in Unknown on line 0; 
+Unable to open primary script: /var/www/html/npo/web/index.php 
+(Too many open files)"
+```
+
+Meaning of the error
+>The PHP runtime attempted to open a file (the main application entry script), but the operating system refused the operation because the process had already reached the maximum number of open file descriptors allowed.
+
+3. Initial Symptoms
+
+Observed behavior included:
+
+- Application endpoints returning errors
+- PHP scripts failing to execute
+- Nginx unable to retrieve responses from PHP-FPM
+- Errors logged referencing “Too many open files”
+
+4. Temporary Resolution
+
+Restarting the services temporarily restored functionality:
+
+```sh
+systemctl restart php8.3-fpm
+systemctl restart nginx
+```
+
+Why this temporarily fixed the problem
+
+Restarting the services terminated all PHP-FPM worker processes, which:
+
+- closed all open file descriptors
+- reset descriptor usage to zero
+- allowed the application to function again until limits were reached again
+
+5. Investigation Steps
+Checking current file descriptor limit
+
+```sh
+ulimit -n
+```
+
+Output: **1024**
+
+This indicated that the maximum number of open files per process was 1024.
+
+Checking system-wide maximum
+
+```sh
+cat /proc/sys/fs/file-max
+```
+
+Output: **9223372036854775807**
+
+This showed the kernel itself was not the limiting factor.
+
+Checking PHP-FPM processes
+
+```sh
+ps aux | grep php-fpm
+```
+
+This confirmed that multiple PHP-FPM worker processes were active.
+
+6. Root Cause
+
+The root cause was that PHP-FPM workers were limited to 1024 open file descriptors.
+
+During application execution, each worker opens multiple resources such as:
+
+- PHP scripts
+- framework files
+- cache files
+- session files
+- log files
+- database sockets
+- FastCGI sockets
+
+With multiple workers processing requests concurrently, the process eventually reached the 1024 descriptor limit, resulting in the error.
+
+7. Understanding PHP-FPM Worker Behavior
+
+PHP-FPM uses a pool of worker processes.
+
+Architecture:
+
+```sh
+                                                       Client
+                                                         ↓
+                                                       Nginx
+                                                         ↓
+                                                       FastCGI socket
+                                                         ↓
+                                                       PHP-FPM master process
+                                                         ↓
+                                                       Worker processes
+                                                       Worker behavior
+```
+Workers are:
+
+- pre-created
+- reused for multiple requests
+- persistent processes
+
+They do not get created per request.
+
+Each worker may open multiple file descriptors while processing requests.
+
+8. Identifying the Systemd Limit
+
+Even if Linux user limits are increased, systemd services may enforce their own limits.
+
+Checking the PHP-FPM systemd limit:
+
+systemctl show php8.3-fpm | grep LimitNOFILE
+
+Initially the service was limited to:
+
+```sh
+1024
+```
+
+9. Permanent Solution
+
+The PHP-FPM service limit was increased to allow more file descriptors.
+
+Step 1 — Create systemd override directory
+
+```sh
+mkdir -p /etc/systemd/system/php8.3-fpm.service.d
+```
+
+Step 2 — Create override configuration
+
+```sh
+nano /etc/systemd/system/php8.3-fpm.service.d/override.conf
+```
+Add the following configuration:
+
+```sh
+[Service]
+LimitNOFILE=65535
+```
+
+Step 3 — Reload systemd
+
+```sh
+systemctl daemon-reload
+```
+
+Step 4 — Restart PHP-FPM
+
+```sh
+systemctl restart php8.3-fpm
+```
+
+10. Verification
+
+To verify the configuration:
+```sh
+systemctl show php8.3-fpm | grep LimitNOFILE
+```
+Output:
+
+```sh
+LimitNOFILE=65535
+LimitNOFILESoft=65535
+```
+
+This confirms that both the soft and hard limits were successfully increased.
+
+11. Explanation of Soft vs Hard Limits
+Limit Type	Description
+- Soft Limit	The active limit used by the process
+- Hard Limit	The maximum value the soft limit can be increased to
+
+Both limits were set to **65535**
+
+This ensures the PHP-FPM workers have sufficient file descriptors for production workloads.
+
+12. Result After Fix
+
+After applying the new limits:
+
+PHP-FPM workers can open up to 65535 files
+
+the “Too many open files” error no longer occurs
+
+the application operates normally under load
+
+13. Preventive Recommendations
+
+Recommended additional PHP-FPM configuration:
+
+pm.max_requests = 500
+
+This ensures workers restart periodically to prevent:
+
+- memory leaks
+- descriptor accumulation
+- stale connections
+

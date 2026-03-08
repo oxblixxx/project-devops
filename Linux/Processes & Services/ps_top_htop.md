@@ -88,11 +88,9 @@ Tips:
 
 💡 Pro Tip:
 
-htop = live, interactive overview.
-
-iotop = live disk I/O per process.
-
-iftop = live network per connection.
+- htop = live, interactive overview.
+- iotop = live disk I/O per process.
+- iftop = live network per connection.
 
 Combine these tools to quickly identify and respond to resource spikes.  Best practice is to setup a Prometheus/Grafana to visualize and just keep htop as your “PID inspector”, and Grafana as your long-term eyes.
 

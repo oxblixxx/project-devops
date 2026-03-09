@@ -97,17 +97,17 @@ Example targets:
 Example:
 
 systemctl isolate multi-user.target
-5. Dependency System
+## 5. Dependency System
 
 Units can depend on other units.
 
 Example relationships:
 
-Requires=
-Wants=
-After=
-Before=
-Conflicts=
+- Requires=
+- Wants=
+- After=
+- Before=
+- Conflicts=
 
 Example:
 
@@ -123,7 +123,7 @@ service starts after network
 
 This dependency graph allows parallel boot.
 
-6. Boot Is Parallel
+## 6. Boot Is Parallel
 
 Unlike old init systems:
 
@@ -133,7 +133,7 @@ This is why boot is much faster.
 
 systemd builds a dependency tree and executes it concurrently.
 
-7. Unit File Structure
+## 7. Unit File Structure
 
 A typical service file:
 
@@ -295,6 +295,4 @@ man systemd.target
 man systemd.timer
 man journalctl
 
-If you'd like, I can also show you:
 
-The 20% of systemd concepts that give 80% mastery (what Linux engineers actually use).

@@ -1,109 +1,96 @@
-1. kill
-Overview
-
+## 1. kill
 kill sends a signal to a specific process using its Process ID (PID).
 
-Despite its name, kill does not always terminate a process. It simply sends signals, which the process may handle differently.
-
 Syntax
+```sh
 kill [signal] PID
-
-Example:
-
 kill 1234
+```
+
 Common Signals
-Signal	Number	Description
-SIGTERM	15	Gracefully terminate process (default)
-SIGKILL	9	Force kill immediately
-SIGHUP	1	Reload configuration
-SIGSTOP	19	Pause process
-SIGCONT	18	Resume paused process
-Examples
-Graceful termination
+- Signal	Number	Description
+- SIGTERM	15	Gracefully terminate process (default)
+- SIGKILL	9	Force kill immediately
+- SIGHUP	1	Reload configuration
+- SIGSTOP	19	Pause process
+- SIGCONT	18	Resume paused process
+
+For a graceful termination for a pid `1234`
+
+```sh
 kill 1234
+```
 
 or
 
+```sh
 kill -15 1234
-Force kill a process
+>Force kill a process
 kill -9 1234
-
+```
 This cannot be ignored by the process.
 
-Reload a service
+### Reload a service
+```sh
 kill -HUP 1234
-
+```
 Often used for daemons like web servers to reload configuration.
 
-2. pkill
-Overview
+## 2. pkill
+pkill sends signals to processes based on their name or pattern, instead of using a PID. It is useful when you want to terminate multiple processes matching a name.
 
-pkill sends signals to processes based on their name or pattern, instead of using a PID.
+#### Syntax
+pkill [signal] process_name,  to kill all nginx processes
 
-It is useful when you want to terminate multiple processes matching a name.
-
-Syntax
-pkill [signal] process_name
-Examples
-Kill all nginx processes
+```sh
 pkill nginx
-Force kill
+>Force kill
 pkill -9 nginx
-Match full command
+>Match full command
 pkill -f python
+```
 
 The -f option matches the entire command line, not just the process name.
 
-Related Command: pgrep
+#### Related Command: `pgrep`
 
 To list PIDs before killing them:
 
+```sh
 pgrep nginx
-
 Show command details:
+>pgrep -a nginx
+```
 
-pgrep -a nginx
-3. nice
-Overview
 
-nice starts a process with a specific scheduling priority.
+## 3. nice
+nice starts a process with a specific scheduling priority. Linux uses a niceness value to determine how much CPU time a process receives.
 
-Linux uses a niceness value to determine how much CPU time a process receives.
-
-Niceness Scale
-Niceness	Priority
--20	Highest priority
-0	Default
-19	Lowest priority
+### Niceness Scale
+1. -20	Highest priority
+2. 0	Default
+3. 19	Lowest priority
+They can't go lower than -20 and higher than 19.
 
 Higher niceness = less CPU priority
 
-Syntax
+```sh
 nice -n VALUE command
-Examples
-Start a low-priority process
+>Start a low-priority process. This ensures the script does not heavily compete for CPU.
 nice -n 10 python3 script.py
-
-This ensures the script does not heavily compete for CPU.
-
-Start high priority process
+>Start high priority process
 sudo nice -n -5 python3 important_task.py
-
+```
 Only root can assign negative values.
 
-4. renice
-Overview
+## 4. renice
+renice changes the priority of an already running process. Unlike nice, which starts a process with priority, renice modifies an existing one.
 
-renice changes the priority of an already running process.
-
-Unlike nice, which starts a process with priority, renice modifies an existing one.
-
-Syntax
+```sh
 renice priority -p PID
-Examples
-Lower priority of running process
+>Lower priority of running process
 renice 10 -p 1234
-Increase priority
+>Increase priority
 sudo renice -5 -p 1234
-
+```
 Root privileges are required.

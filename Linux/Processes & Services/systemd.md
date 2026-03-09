@@ -77,11 +77,11 @@ systemctl is the main interface to systemd.
 
 Old Linux used runlevels:
 
-0 halt
-1 single user
-3 multi user
-5 graphical
-6 reboot
+- 0 halt
+- 1 single user
+- 3 multi user
+- 5 graphical
+- 6 reboot
 
 systemd replaces these with targets.
 
@@ -95,13 +95,11 @@ Example targets:
 - poweroff.target	shutdown
 
 Example:
-
 systemctl isolate multi-user.target
+
 ## 5. Dependency System
 
-Units can depend on other units.
-
-Example relationships:
+Units can depend on other units. Example relationships:
 
 - Requires=
 - Wants=
@@ -111,15 +109,16 @@ Example relationships:
 
 Example:
 
+```sh
 [Unit]
 Requires=network.target
 After=network.target
+```
 
 Meaning:
 
-service needs network
-
-service starts after network
+- service needs network
+- service starts after network
 
 This dependency graph allows parallel boot.
 
@@ -137,10 +136,13 @@ systemd builds a dependency tree and executes it concurrently.
 
 A typical service file:
 
+```sh
 /etc/systemd/system/myapp.service
+```
 
 Example:
 
+```sh
 [Unit]
 Description=My Application
 After=network.target
@@ -151,119 +153,127 @@ Restart=always
 
 [Install]
 WantedBy=multi-user.target
+```
 
 Sections:
 
-Section	Purpose
-Unit	metadata and dependencies
-Service	service behavior
-Install	how it is enabled
-8. Enabling vs Starting
+- Unit	metadata and dependencies
+- Service	service behavior
+- Install	how it is enabled
+
+## 8. Enabling vs Starting
 
 These are different.
 
-Start:
+- Start: Starts now.
 
+```sh
 systemctl start nginx
+```
 
-Starts now.
+- Enable: Starts automatically at boot.
 
-Enable:
-
+```sh
 systemctl enable nginx
-
-Starts automatically at boot.
-
+```
 Enable works by creating symlinks in target directories.
 
-9. Logging With journald
+## 9. Logging With journald
 
-systemd provides a logging system:
+systemd provides a logging system. View logs:
 
-journald
-
-View logs:
-
+```sh
 journalctl
+```
 
 Examples:
 
+```sh
 journalctl -u nginx
 journalctl -b
 journalctl -f
+```
 
 Features:
 
-structured logs
+- structured logs
+- indexed
+- boot-aware
+- centralized
 
-indexed
-
-boot-aware
-
-centralized
-
-10. Timers Replace Cron (Optionally)
+## 10. Timers Replace Cron (Optionally)
 
 systemd timers schedule jobs.
 
 Example:
 
+```sh
 backup.timer
+```
 
 Equivalent to cron but integrated with systemd.
 
 Example timer unit:
 
+```sh
 [Timer]
 OnCalendar=daily
 Persistent=true
-11. systemd Tracks Processes
+```
+
+## 11. systemd Tracks Processes
 
 systemd tracks services using cgroups.
 
 This means:
 
-it knows every process a service spawns
-
-it can kill the whole service tree
+- it knows every process a service spawns
+- it can kill the whole service tree
 
 Example:
 
+```sh
 systemctl kill nginx
+```
 
 Kills all processes belonging to that unit.
 
-12. Reloading systemd
+## 12. Reloading systemd
 
 If you modify a unit file:
 
+```sh
 systemctl daemon-reload
+```
 
 This reloads unit definitions.
 
 Without this, systemd will not see your changes.
 
-13. Inspecting Units
+## 13. Inspecting Units
 
 Useful commands:
 
+```sh
 systemctl list-units
 systemctl list-unit-files
 systemctl show nginx
 systemctl cat nginx
 systemctl status nginx
-
+```
 These help debug systemd behavior.
 
-14. Masking a Service
+## 14. Masking a Service
 
 You can completely disable a service:
 
+```sh
 systemctl mask nginx
+```
 
 This prevents any service from starting it, even manually.
 
-15. systemd Is Modular
+## 15. systemd Is Modular
 
 systemd includes several subsystems:
 

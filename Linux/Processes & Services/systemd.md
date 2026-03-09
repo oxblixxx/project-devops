@@ -296,3 +296,220 @@ man systemd.timer
 man journalctl
 
 
+
+1. Units (Everything in systemd is a Unit)
+
+The fundamental concept.
+
+systemd manages units, which are configuration objects.
+
+Common ones you will use:
+
+Unit	What it manages
+.service	services/processes
+.target	boot states
+.timer	scheduled jobs
+.mount	filesystems
+.socket	socket activation
+.path	file change triggers
+
+Examples:
+
+nginx.service
+ssh.service
+multi-user.target
+backup.timer
+
+Check running units:
+
+systemctl list-units
+
+Check all installed units:
+
+systemctl list-unit-files
+2. systemctl (Main Control Command)
+
+Everything you do with systemd goes through systemctl.
+
+Essential commands:
+
+Start service:
+
+systemctl start nginx
+
+Stop service:
+
+systemctl stop nginx
+
+Restart service:
+
+systemctl restart nginx
+
+View status:
+
+systemctl status nginx
+3. Enable vs Start (Very Important)
+
+Many engineers confuse this.
+
+Start:
+
+systemctl start nginx
+
+Starts right now.
+
+Enable:
+
+systemctl enable nginx
+
+Starts at boot.
+
+Disable:
+
+systemctl disable nginx
+
+Doesn't start on boot.
+
+Under the hood:
+
+enable creates symlinks to targets.
+
+4. Service File Structure
+
+Most real work is editing service files.
+
+Typical location:
+
+/etc/systemd/system/myapp.service
+
+Basic service example:
+
+[Unit]
+Description=My App
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python app.py
+Restart=on-failure
+User=www-data
+
+[Install]
+WantedBy=multi-user.target
+
+Key options to remember:
+
+Option	Meaning
+Description	service description
+ExecStart	command to run
+Restart	restart behavior
+User	run as user
+After	dependency
+5. daemon-reload (Critical)
+
+Whenever you modify a service file:
+
+systemctl daemon-reload
+
+This tells systemd to reload unit definitions.
+
+Then restart the service:
+
+systemctl restart myapp
+6. Targets (Replacement for Runlevels)
+
+Targets represent system states.
+
+Common targets:
+
+Target	Meaning
+multi-user.target	server mode
+graphical.target	desktop
+rescue.target	maintenance mode
+reboot.target	reboot
+poweroff.target	shutdown
+
+Default boot target:
+
+systemctl get-default
+
+Change boot target:
+
+systemctl set-default multi-user.target
+7. Journald (systemd Logging)
+
+systemd includes its own logging system.
+
+View logs:
+
+journalctl
+
+View logs for a service:
+
+journalctl -u nginx
+
+View logs for current boot:
+
+journalctl -b
+
+Follow logs live:
+
+journalctl -f
+8. Dependencies (Service Ordering)
+
+systemd uses dependency graphs.
+
+Common directives:
+
+Directive	Meaning
+After	start after another unit
+Requires	must have this unit
+Wants	optional dependency
+Before	start before another unit
+
+Example:
+
+[Unit]
+After=network.target
+Requires=network.target
+
+Meaning:
+
+Service needs network and starts after it.
+
+Bonus: 3 Things That Make systemd Powerful
+
+These are worth knowing but slightly more advanced.
+
+1️⃣ Timers (Cron replacement)
+
+Example:
+
+backup.timer
+
+Schedules services.
+
+2️⃣ Socket Activation
+
+systemd starts services only when traffic arrives.
+
+Example:
+
+nginx.socket
+nginx.service
+3️⃣ cgroups
+
+systemd tracks services using Linux control groups.
+
+Meaning:
+
+If a service spawns 10 child processes, systemd still manages them.
+
+Real Mental Model
+
+Think of systemd like this:
+
+Units = objects
+Targets = system states
+systemctl = control interface
+journald = logs
+dependencies = execution order

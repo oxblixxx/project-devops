@@ -513,3 +513,227 @@ Targets = system states
 systemctl = control interface
 journald = logs
 dependencies = execution order
+
+
+
+1. systemctl status
+
+The first command you should always run.
+
+systemctl status nginx
+
+Shows:
+
+service state
+
+main PID
+
+last logs
+
+exit codes
+
+restart attempts
+
+Example output clues:
+
+failed
+
+exit-code
+
+permission denied
+
+No such file or directory
+
+Tip:
+
+systemctl status nginx -l
+
+-l prevents line truncation.
+
+2. journalctl -u
+
+View logs for a specific service.
+
+journalctl -u nginx
+
+Most common debugging command.
+
+Useful variations:
+
+journalctl -u nginx -n 50
+
+Last 50 logs.
+
+journalctl -u nginx -f
+
+Live logs.
+
+3. journalctl -xe
+
+Shows recent system errors with explanations.
+
+journalctl -xe
+
+Helpful when:
+
+service won't start
+
+permission errors
+
+dependency failures
+
+-x adds explanations from systemd.
+
+4. systemctl cat
+
+Shows the exact service file systemd is using.
+
+systemctl cat nginx
+
+Very useful because services may have:
+
+override files
+
+drop-in configurations
+
+Example:
+
+/etc/systemd/system/nginx.service
+/usr/lib/systemd/system/nginx.service
+5. systemctl show
+
+Displays all properties of a service.
+
+systemctl show nginx
+
+Useful fields:
+
+MainPID
+ExecStart
+Restart
+TimeoutStartUSec
+ActiveState
+SubState
+
+You can filter:
+
+systemctl show nginx | grep Exec
+6. systemctl list-dependencies
+
+Shows dependency tree.
+
+systemctl list-dependencies nginx
+
+Useful when:
+
+services start in wrong order
+
+dependencies missing
+
+target problems
+
+Example:
+
+nginx.service
+ ├─network.target
+ └─system.slice
+7. systemctl daemon-reexec
+
+Rare but powerful.
+
+systemctl daemon-reexec
+
+This restarts systemd itself without rebooting the system.
+
+Useful when:
+
+systemd state becomes inconsistent
+
+service manager bugs appear
+
+8. systemctl is-active
+
+Quick health check.
+
+systemctl is-active nginx
+
+Output:
+
+active
+inactive
+failed
+
+Very useful in scripts.
+
+Example:
+
+systemctl is-active nginx && echo OK
+9. systemctl list-units --failed
+
+Shows all failed services.
+
+systemctl list-units --failed
+
+Example output:
+
+nginx.service        loaded failed failed
+mysql.service        loaded failed failed
+
+Great for system audits.
+
+10. systemd-analyze blame
+
+Shows which services slow down boot.
+
+systemd-analyze blame
+
+Example:
+
+4.211s mysql.service
+2.315s nginx.service
+1.889s docker.service
+
+Useful for performance debugging.
+
+Bonus (Very Useful)
+Show boot critical chain
+systemd-analyze critical-chain
+
+Shows boot dependency delays.
+
+Verify service file
+systemd-analyze verify myapp.service
+
+Checks for:
+
+syntax errors
+
+invalid directives
+
+dependency issues
+
+Real Debugging Workflow
+
+When a service fails, the typical workflow is:
+
+Step 1
+systemctl status service
+Step 2
+journalctl -u service
+Step 3
+systemctl cat service
+Step 4
+systemctl list-dependencies service
+Step 5
+systemd-analyze verify service
+Pro Tip (Very Useful in Production)
+
+Watch logs while restarting a service:
+
+journalctl -fu nginx
+
+Then in another terminal:
+
+systemctl restart nginx
+
+You see real-time startup failures.

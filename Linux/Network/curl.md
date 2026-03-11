@@ -103,151 +103,99 @@ curl -H "Authorization: Bearer TOKEN" \
 -H "Content-Type: application/json" \
 https://api.example.com
 
-Use cases
+- Test authenticated APIs
+- Debug token or header issues
 
-Test authenticated APIs
-
-Debug token or header issues
-
-10. Check Redirects
-
+## 10. Check Redirects
 Check redirect without following it:
 
+```bash
 curl -I http://example.com
-
-Example
-
-HTTP/1.1 301 Moved Permanently
-Location: https://example.com
-
-Follow redirects automatically:
-
+>HTTP/1.1 301 Moved Permanently
+>Location: https://example.com
+>Follow redirects automatically:
 curl -L http://example.com
-11. Debug TLS / SSL Issues
-curl -v https://example.com
+```
 
-Example output
+
+## 11. Debug TLS / SSL Issues
+
+```bash
+curl -v https://example.com
+```
 
 * SSL connection using TLS1.3
 * Server certificate:
 * subject: CN=example.com
 
-Use cases
+- TLS handshake debugging
+- Certificate validation issues
 
-TLS handshake debugging
+## 12. Check HTTP Status Code Only
 
-Certificate validation issues
-
-12. Check HTTP Status Code Only
+```sh
 curl -o /dev/null -s -w "%{http_code}\n" https://example.com
-
-Example output
-
 200
-
-Options explained
+```
 
 Option	Meaning
--o /dev/null	Discard response body
--s	Silent mode
--w	Print custom output
+- -o /dev/null	Discard response body
+- -s	Silent mode
+- -w	Print custom output
 
-Use cases
+- Health checks
+- Monitoring scripts
 
-Health checks
-
-Monitoring scripts
-
-13. Measure Response Time
-curl -o /dev/null -s -w "%{time_total}\n" https://example.com
-
-Example output
-
-0.423
-
+## 13. Measure Response Time
 Meaning the request took 423 milliseconds.
+```bash
+curl -o /dev/null -s -w "%{time_total}\n" https://example.com
+0.423
+```
+- Performance debugging
+- Latency monitoring
 
-Use cases
-
-Performance debugging
-
-Latency monitoring
-
-14. Pretty Print JSON Responses
-curl https://api.example.com/users | jq
-
+## 14. Pretty Print JSON Responses
 jq formats JSON responses for easier reading.
+```bash
+curl https://api.example.com/users | jq
+```
 
-Use cases
+- API debugging
+- Log inspection
 
-API debugging
+## 15. Simulate Browser Requests
 
-Log inspection
-
-15. Simulate Browser Requests
+```bash
 curl -A "Mozilla/5.0" https://example.com
-
+```
 -A sets the User-Agent header.
 
-Use cases
+- Bypass simple bot blocks
+- Test browser-specific behavior
 
-Bypass simple bot blocks
-
-Test browser-specific behavior
-
-16. Test Local Services
+## 16. Test Local Services
+```bash
 curl http://localhost:8000
+```
 
-Use cases
+- Verify backend services
+- Test application ports
+- Debug reverse proxy issues
 
-Verify backend services
-
-Test application ports
-
-Debug reverse proxy issues
-
-Example architecture
-
-Client → Nginx → Backend App
-
-Test layers individually.
-
-17. Save Response to a File
-curl https://example.com -o page.html
-
+## 17. Save Response to a File
 This saves the response body into a file.
 
-Use cases
+```bash
+curl https://example.com -o page.html
+```
 
-Download files
 
-Save API responses
+- Download files
+- Save API responses
+- Debug HTML output
 
-Debug HTML output
-
-Difference Between -i and -I
-Option	Meaning	Behavior
--i	Include headers	Shows headers and body
--I	HEAD request	Sends HEAD request and shows headers only
-Example Using -i
-curl -i https://example.com
-
-Output
-
-HTTP/1.1 200 OK
-Server: nginx
-
-<html>Hello</html>
-
-Headers and body are returned.
-
-Example Using -I
-curl -I https://example.com
-
-Output
-
-HTTP/1.1 200 OK
-Server: nginx
-Content-Type: text/html
-
-Only headers are returned.
+>Difference Between -i and -I.
+>Option	Meaning	Behavior.
+>-i	Include headers	Shows headers and body.
+>-I	HEAD request	Sends HEAD request and shows headers only.

@@ -1,0 +1,1 @@
+To set up mysql [visit](https://dev.mysql.com/doc/refman/8.4/en/linux-installation.html) and choose the operating system and then, login to oracle-cloud to fetch the url, use wget to download and follow the instruction

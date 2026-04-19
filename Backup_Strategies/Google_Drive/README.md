@@ -1,4 +1,4 @@
-# Google Drive Backup Setup (Rclone)
+# Google Drive Backup Setup + Rclone + MSMTP
 
 This setup uses Google Drive as a remote storage backend for backups via rclone.
 

@@ -60,3 +60,6 @@ GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO backupsvc;
 -- For PostgreSQL 14+, use the global read role for simplicity
 GRANT pg_read_all_data TO backupsvc;
 ```
+
+
+Then after this, generate google client secret, generate google client_id, enable google drive api, add test user, also generate the gmail passs to use gmail for smtp, the gmail to be used must be registered to use google cloud. 

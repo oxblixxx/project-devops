@@ -7,3 +7,4 @@ Backup is essential for infrastructure, to return to a point of recovery of data
 
 Why it matters? Protects against hardware failure, human error, and disasters.
 
+Over the years, I have used different backup platform such as Google drive, Backblaze, iDrive.

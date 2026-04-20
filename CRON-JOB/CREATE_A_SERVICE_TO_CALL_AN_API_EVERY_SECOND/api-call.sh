@@ -1,2 +1,3 @@
 #!/bin/bash
-curl -s -X GET "http://your-api-endpoint.com"
+response=$(curl -s -X GET "http://your-api-endpoint.com")
+echo "[$(date)] API response: $response"

@@ -1,0 +1,11 @@
+[Unit]
+Description=Run API Runner every second
+
+[Timer]
+OnUnitActiveSec=1s
+AccuracySec=1ms
+Persistent=true
+Unit=api-call.service
+
+[Install]
+WantedBy=timers.target

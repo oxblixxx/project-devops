@@ -1,16 +1,45 @@
-# This setup runs a shell script every 1 second using systemd services and timers. Logs are handled by systemd journal, so no manual log rotation is required.
+# Systemd Timer: Run API Script Every 1 Second
 
-1. Create the Script.
-Create a [script](./api-call.sh) file and save it in a preferered location `/usr/local/bin/api-call.sh`. Make the file executable, by running this command `chmod +x /usr/local/bin/api-call.sh`
+This setup runs a shell script every 1 second using **systemd services and timers**. Logs are handled automatically by the **systemd journal**, so no manual log rotation is required.
 
-2. Create the Service
+---
 
-Create a [service](./api-call.service) file in the system directory `/etc/systemd/system/api-call.service` 
+## 1. Create the Script
 
-3. Create the Timer
+Create the script file:
 
-Create /etc/systemd/system/api-call.timer:
+```bash
+/usr/local/bin/api-call.sh
 
+Make it executable:
+
+chmod +x /usr/local/bin/api-call.sh
+Example script:
+#!/bin/bash
+
+response=$(curl -s -X GET "http://your-api-endpoint.com")
+
+echo "[$(date)] API response: $response"
+2. Create the Systemd Service
+
+Create the service file:
+
+/etc/systemd/system/api-call.service
+Service configuration:
+[Unit]
+Description=API Runner Service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/api-call.sh
+StandardOutput=journal
+StandardError=journal
+3. Create the Systemd Timer
+
+Create the timer file:
+
+/etc/systemd/system/api-call.timer
+Timer configuration:
 [Unit]
 Description=Run API Runner every second
 
@@ -21,28 +50,43 @@ Unit=api-call.service
 
 [Install]
 WantedBy=timers.target
+4. Reload Systemd and Enable Timer
 
-4. Reload and Enable
+Run the following commands:
+
 sudo systemctl daemon-reload
 sudo systemctl enable --now api-call.timer
-
 5. Monitor Logs
-
-Check service logs:
-
+View service logs:
 journalctl -u api-call.service -f
-
-
 Check timer status:
-
 systemctl status api-call.timer
+6. Notes
+Runs every 1 second (~86,400 executions per day).
+Logs are stored in the systemd journal and automatically rotated.
+No manual log rotation is required.
+7. Adjusting Frequency
 
-Notes
+To change how often the script runs, modify:
 
-Runs every 1 second (~86,400 calls/day).
+OnUnitActiveSec=1s
 
-Logs are stored in systemd journal and rotated automatically.
+Examples:
 
-To adjust frequency, change OnUnitActiveSec=1s in the timer.
+5s → every 5 seconds
+10s → every 10 seconds
+1min → every minute
+8. Preventing Log Growth (Recommended)
 
-To prevent log growth, tune /etc/systemd/journald.conf with limits (SystemMaxUse, RuntimeMaxUse).
+Edit journald configuration:
+
+/etc/systemd/journald.conf
+
+Set limits:
+
+SystemMaxUse=500M
+RuntimeMaxUse=200M
+
+Then restart journald:
+
+sudo systemctl restart systemd-journald

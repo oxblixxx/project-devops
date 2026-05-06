@@ -46,6 +46,7 @@ To create a new, secure FTP user locked to their home directory, follow this pro
 
 Add a new user named ftpuser with a restricted bash shell (/bin/rbash). This prevents them from executing arbitrary commands. The -m flag creates the user's home directory.
 
+NB:::: THERE IS AN ISSUE, NOT FIXED YET, CREATE USER WITH A /bin/bash shell
 ```sh
 sudo useradd -m -d /home/ftpuser -s /bin/rbash ftpuser
 sudo passwd ftpuser

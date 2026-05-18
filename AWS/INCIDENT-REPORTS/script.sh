@@ -15,6 +15,7 @@ if [ -z "$USERNAME" ] || [ -z "$START_TIME" ] || [ -z "$END_TIME" ]; then
   exit 1
 fi
 
+# https://docs.aws.amazon.com/cli/latest/reference/cloudtrail/lookup-events.html
 aws cloudtrail lookup-events \
   --lookup-attributes AttributeKey=Username,AttributeValue="$USERNAME" \
   --start-time "$START_TIME" \

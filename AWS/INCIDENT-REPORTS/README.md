@@ -21,3 +21,8 @@ The objective of this work was to investigate, contain, and remediate a potentia
 - AWS Budgets
    - Set spending threshold alerts (3-month window)
    - Detect unusual cost spikes potentially caused by unauthorized usage
+
+
+## SCRIPT EXECUTION
+1. Make the script executable
+2. Then run the script this way `./script.sh <suspected_IAM_USERNAME> 2026-05-15T00:00:00Z 2026-05-18T00:00:00Z`

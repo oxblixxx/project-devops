@@ -1,3 +1,114 @@
+# STEPS TO CONSIDER WHILE TROUBLESHOOTING PHP.
+To troubleshoot PHP, the first step is to check the logs. confirm the php version the server is running on.
+
+```sh
+php -v
+```
+
+Then run this commands to fetch logs
+
+```sh
+apachectl -S
+php-fpm<version_number> -t
+tail -f /var/log/apache2/error.log
+journalctl -xeu php<version_number>-fpm.service
+systemctl status php8.3-fpm
+systemctl status apache2
+```
+
+
+## PHP-FPM Timeout Incident Report
+
+### Issue
+Users experienced website outages and slow responses. Apache error logs showed repeated PHP-FPM upstream timeout errors:
+
+
+>[Fri May 29 18:06:11.412046 2026] [proxy_fcgi:error] [pid 3955] (70007)The timeout specified has expired: [client xxxxxxx7:35762] AH01075: Error dispatching request to : (polling)
+[Fri May 29 18:06:11.459519 2026] [proxy_fcgi:error] [pid 3850] (70007)The timeout specified has expired: [client xxxxxx:35758] AH01075: Error dispatching request to : (polling)
+[Fri May 29 18:06:16.643499 2026] [proxy_fcgi:error] [pid 4383] (70007)The timeout specified has expired: [client Xxxxxx:3368] AH01075: Error dispatching request to : (polling), referer:
+This indicates that Apache successfully received client requests but did not receive a response from PHP-FPM within the configured timeout period.
+
+which means that 
+>Apache successfully received the request but did not receive a response from PHP-FPM within the configured timeout period.
+Apache was waiting for PHP-FPM to complete processing, but the request exceeded the timeout threshold.
+
+### Impact
+- Website requests timed out.
+- Users experienced inaccessible or slow-loading pages.
+- Apache service remained operational.
+- PHP-FPM became the processing bottleneck.
+### Environment
+- Apache2
+- PHP 8.3 (PHP-FPM)
+- MySQL
+### Investigation
+1. Verify CPU and Process Utilization
+```sh
+ps -eo uid,user,pid,%cpu,%mem --sort=-%cpu | head -n 10
+```
+
+Run multiple times or use:
+
+```sh
+htop
+```
+
+CPU utilization remained within normal limits.
+
+2. Verify Server Resources
+
+```sh
+nproc
+free -m
+top
+```
+
+Available CPU and memory resources were sufficient.
+
+3. Review PHP-FPM Pool Configuration
+
+Inspect the active pool settings:
+
+```sh
+grep -E "^pm\." /etc/php/8.3/fpm/pool.d/www.conf
+```
+
+Edit the configuration:
+
+```sh
+nano /etc/php/8.3/fpm/pool.d/www.conf
+```
+
+The investigation revealed that:
+
+`pm.max_children = 5`
+
+and its related process manager settings were too low for the available server resources and application workload, causing PHP-FPM worker exhaustion and request queuing.
+
+Note: Ensure the following relationship is maintained:
+
+pm.min_spare_servers <= pm.start_servers <= pm.max_spare_servers
+
+4. Validate Configuration
+
+```sh
+php-fpm8.3 -t
+```
+
+### Resolution
+
+Increase PHP-FPM pool capacity to match server resources and application demand, then restart services:
+
+```sh
+systemctl restart php8.3-fpm
+systemctl restart apache2
+```
+
+### Root Cause
+
+PHP-FPM was configured with an insufficient number of worker processes (pm.max_children=5), causing requests to queue and exceed Apache's FastCGI timeout. Increasing the PHP-FPM pool limits resolved the issue and restored normal application responsiveness.
+
+
 # Laravel Docker 500 Error Fix Documentation
 
 ## Problem

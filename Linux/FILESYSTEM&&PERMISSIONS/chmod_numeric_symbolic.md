@@ -252,11 +252,25 @@ Directories → rwxr-xr-x
 
 Files → rw-r--r--
 
+
+
+
 0002 (Common in Shared Environments)
 777 - 002 = 775
 666 - 002 = 664
 
 Used when users share a common group.
+
+# UMASK Reference Table
+
+| Umask | Resulting File Permissions | Meaning |
+|------|----------------------------|--------|
+| 000  | 666 files / 777 dirs       | No restrictions (dangerous) |
+| 002  | 664 files / 775 dirs       | Group writable (common in teams) |
+| 022  | 644 files / 755 dirs       | Default for most Linux systems |
+| 027  | 640 files / 750 dirs       | More private (no access for others) |
+| 077  | 600 files / 700 dirs       | Fully private (strict security) |
+| 007  | 660 files / 770 dirs       | Only owner + group access |
 
 Important Note
 

@@ -8,14 +8,59 @@ php -v
 Then run this commands to fetch logs
 
 ```sh
-apachectl -S
+apachectl -S | grep <the_website_url>
+```
+
+For nginx
+```sh
+grep -R "server_name URL" /etc/nginx/sites-enabled/
+```
+Then cat the conf file. 
+
+Also, it's to note that both apache and nginx conf file for website, needs to have a dedicated error log file for ease. 
+
+
+```sh
+error_log /var/log/nginx/NSTFDC-Loan-Management_error.log;
+```
+
+
+Test this first
+
+```sh
 php-fpm<version_number> -t
-tail -f /var/log/apache2/error.log
+```
+
+
+tail -f /var/log/apache2/error.log or tail -f tail -n 50 /var/log/nginx/NSTFDC-Loan-Management_error.log
+
+
+If it's laravel, also inspect the `laravel.log` file
 journalctl -xeu php<version_number>-fpm.service
+sudo tail -f /var/log/php8.3-fpm.log
+
+
+Check the loaded configuration file
+
+```sh
+php-fpm8.3 -i | grep "Loaded Configuration File"
+```
+
+```sh
 systemctl status php8.3-fpm
 systemctl status apache2
 ```
 
+
+
+## FIXING MAXIMUM EXECUTION TIME ERROR
+This error was gotten from a timeout during file upload and the error for the logs was fetched from laravel.log file
+
+```sh
+[2026-06-16 17:59:38] local.ERROR: Maximum execution time of 300 seconds exceeded {"userId":218,"exception":"[object] (Symfony\\Component\\ErrorHandler\\Error\\FatalError(code: 0): Maximum execution time of 300 seconds exceeded at /var/www/html/NSTFxxxxxxxxxx/vendor/phpoffice/phpspreadsheet/src/PhpSpreadsheet/Cell/Coordinate.php:35)
+```
+
+Firstly check the loaded configuration  file. Then edit it and increase the maximum execution time. Then restart `systemctl restart php8.3-fpm`
 
 ## PHP-FPM Timeout Incident Report
 

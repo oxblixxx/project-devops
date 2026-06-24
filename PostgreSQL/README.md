@@ -58,9 +58,15 @@ local   all             postgres                                md5
 
 ```sh
 CREATE DATABASE grafana;
+
 CREATE USER grafana WITH PASSWORD 'your_secure_password';
-GRANT ALL PRIVILEGES ON DATABASE grafana_new TO grafana_new;
-ALTER SCHEMA public OWNER TO grafana_new;
-GRANT ALL PRIVILEGES ON DATABASE grafana_new TO grafana_new;
-GRANT ALL PRIVILEGES ON SCHEMA public TO grafana_new;
+
+GRANT ALL PRIVILEGES ON DATABASE grafana TO grafana;
+
+\c grafana
+
+ALTER SCHEMA public OWNER TO grafana;
+GRANT ALL PRIVILEGES ON SCHEMA public TO grafana;
+
+
 ```

@@ -55,7 +55,22 @@ pm2 start backend/backend.py \
 
 --interpreter: ensures the virtual environment’s Python is used.
 
+Incase there is an issue with loading the .env, add this to main.py
+
+```sh
+from pathlib import Path
+from dotenv import load_dotenv
+
+project_root = Path(__file__).resolve().parents[2]
+load_dotenv(project_root / ".env")
+```
+
+Ensure the `project_root` directs to the root directory where .env is located.
 Deactivate the virtual environment
+
+``sh
+deactivate
+```
 ## Step 4: Verify PM2 Process
 
 Check running PM2 processes:

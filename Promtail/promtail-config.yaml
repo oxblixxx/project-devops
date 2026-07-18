@@ -1,0 +1,72 @@
+server:
+  http_listen_port: 9080
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+## THIS SHOULD MATCH THE STATIC CONTAINER ASSIGNED IP
+  - url: http://172.28.30.17:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: hello_world
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: hello_world
+          env: production
+          __path__: /var/log/hello_world/*.log
+    pipeline_stages:
+      - regex:
+          expression: '^\[(?P<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\] (?P<env>\w+)\.(?P<level>\w+): (?P<message>.*)'
+      - labels:
+          level:
+          env: production
+      - timestamp:
+          source: timestamp
+          format: '2006-01-02 15:04:05'
+          location: "Asia/Kolkata"  # <-- Add this
+      - drop:
+          older_than: 24h
+          source: timestamp
+
+  - job_name: hello_earth
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: hello_earth
+          env: production
+          __path__: /var/log/hello_earth/*.log
+    pipeline_stages:
+      - regex:
+          expression: '^\[(?P<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\] (?P<env>\w+)\.(?P<level>\w+): (?P<message>.*)'
+      - labels:
+          level:
+          env: production
+      - timestamp:
+          source: timestamp
+          format: '2006-01-02 15:04:05'
+          location: "Asia/Kolkata"
+  - job_name: hello_sun
+    static_configs:
+      - targets:
+          - localhost
+        labels:
+          job: hello_sun
+          env: staging
+          __path__: /var/log/hello_sun/*.log
+    pipeline_stages:
+      - regex:
+          expression: '^\[(?P<timestamp>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\] (?P<env>\w+)\.(?P<level>\w+): (?P<message>.*)'
+      - labels:
+          level:
+          env: production
+      - timestamp:
+          source: timestamp
+          format: '2006-01-02 15:04:05'
+          location: "Asia/Kolkata"
+      - drop:
+          older_than: 24h
+          source: timestamp

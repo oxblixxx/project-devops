@@ -1,0 +1,15 @@
+services:
+  promtail:
+    image: grafana/promtail:3.4
+    volumes:
+      - ./promtail-config.yaml:/etc/promtail/config.yml
+# THIS DIRECTORY IS MAIN PROMTAIL WHERE OTHER DIRECTORY ARE CENTRALIZED
+      - /var/log/promtail:/var/log/nce:ro
+    command: -config.file=/etc/promtail/config.yml
+ # THIS SHOULD BE THE SAME NETWORK AS GRAFANA AND LOKI
+    networks:
+      management_net:
+        ipv4_address: 172.28.30.16
+networks:
+  management_net:
+    external: true

@@ -58,31 +58,31 @@ Edit the same file:
 sudo nano /etc/apache2/conf-available/security.conf
 
 ```sh
-Prevent MIME sniffing
+#Prevent MIME sniffing
 Header always set X-Content-Type-Options "nosniff"
 
-Clickjacking protection
+#Clickjacking protection
 Header always set X-Frame-Options "DENY"
 
-XSS protection (legacy browsers)
+#XSS protection (legacy browsers)
 Header always set X-XSS-Protection "1; mode=block"
 
-Referrer policy (limit cross-site leakage)
+#Referrer policy (limit cross-site leakage)
 Header always set Referrer-Policy "strict-origin-when-cross-origin"
 
-Prevent old Flash / cross-domain policies
+#Prevent old Flash / cross-domain policies
 Header always set X-Permitted-Cross-Domain-Policies "none"
 
-Remove tech details if something sets them
+#Remove tech details if something sets them
 Header always unset X-Powered-By
 
-HSTS (ONLY enable when HTTPS is fully working and permanent)
-Forces HTTPS for 1 year and applies to subdomains
+#HSTS (ONLY enable when HTTPS is fully working and permanent)
+#Forces HTTPS for 1 year and applies to subdomains
 Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
-Permissions Policy (formerly Feature-Policy)
+#Permissions Policy (formerly Feature-Policy)
 Header always set Permissions-Policy "geolocation=(), microphone=(), camera=(), fullscreen=(self)"
 
-Content Security Policy (CSP)
+#Content Security Policy (CSP)
 NOTE: This is strict. Expect to tweak for real apps (CDNs, analytics, etc).
 Header always set Content-Security-Policy "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://stackpath.bootstrapcdn.com; font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://stackpath.bootstrapcdn.com https://code.jquery.com;"
 #Header always set Content-Security-Policy "default-src 'self'; img-src 'self' data:; script-src 'self'; style-src 'self' 'unsafe-inline'; frame-ancestors 'none'"

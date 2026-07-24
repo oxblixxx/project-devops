@@ -1,1 +1,1 @@
-
+This documentation provides a comprehensive guide to configuring and using GitHub and GitHub Actions for CI/CD workflows. The document is intended to serve as both a setup guide and an operational reference, rather than being limited solely to installation or troubleshooting.

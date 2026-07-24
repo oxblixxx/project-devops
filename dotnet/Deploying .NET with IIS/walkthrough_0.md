@@ -33,4 +33,4 @@ Open the project's .csproj file and look for the Entity Framework provider packa
 <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="*" />
 ```
 
-
+After identifying the database provider, proceed to the [Database Setup guide](./database.md) for the appropriate configuration steps based on the application's ORM and database engine.

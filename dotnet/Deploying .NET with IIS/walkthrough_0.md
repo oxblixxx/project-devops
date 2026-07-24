@@ -1,11 +1,27 @@
 # Overview
 
-Before deploying a .NET application, identify:
+## STEP 1: CONFIRM IF IT A MULTIPLE PROJECT.
+Before deploying a .NET application, observe the project root, if there is `slns`. 
 
-1. Which database engine it connects to (SQL Server, PostgreSQL, MySQL, etc.).
-2. Ensure the application has a database user with the required permissions.
+A .NET solution (.sln) groups one or more related .NET projects into a single workspace.
 
-## Step 1: Confirm the ORM
+Check if the project contains a solution file:
+
+```PowerShell
+Get-ChildItem -Filter *.sln
+```
+
+```bash
+grep -RIn "*.sln" .
+```
+
+If a .sln file exists, the application likely consists of multiple projects.
+
+Next, identify the entry project by locating the project that contains Program.cs. Open its .csproj file to review the target framework and any <ProjectReference> entries, which show how the projects are connected.
+
+
+
+## Step 2: Confirm the ORM
 
 The quickest way to determine the ORM is to inspect the project dependencies.
 

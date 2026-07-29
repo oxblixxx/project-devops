@@ -137,6 +137,7 @@ if [ "$USE_DRIVE" = true ]; then
         log "  Uploading: $FNAME ($FILESIZE)..."
 
         # Use larger chunk size for big files, timeout, and retry
+        # This was used when there was a DB size of 6GB, which failed to upload after retries.
         if rclone copy "$FILE" "$DRIVE_DATE_FOLDER/" \
                 --drive-chunk-size 256M \
                 --transfers 1 \

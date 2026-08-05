@@ -44,23 +44,29 @@ detect_os() {
 
 verify_gpg_key() {
     local keyring="$1"
-    if ! command -v gpg &>/dev/null; then
-        echo "⚠️  gpg not found, skipping GPG fingerprint verification"
-        return 0
-    fi
-    
-    local fingerprint
-    fingerprint=$(gpg --with-colons --show-keys "$keyring" 2>/dev/null | grep '^fpr' | head -n1 | cut -d: -f10)
-    
-    if [[ "$fingerprint" == "$EXPECTED_FINGERPRINT" ]]; then
-        echo "✅ GPG key fingerprint verified: $fingerprint"
-    else
-        echo "⚠️  GPG key fingerprint mismatch!"
-        echo "   Expected: $EXPECTED_FINGERPRINT"
-        echo "   Got:      ${fingerprint:-'(none)'}"
-        read -rp "Continue anyway? [y/N]: " confirm
-        [[ "$confirm" =~ ^[Yy]$ ]] || exit 1
-    fi
+
+    mapfile -t fingerprints < <(
+        gpg --with-colons --show-keys "$keyring" \
+        | awk -F: '$1=="fpr"{print $10}'
+    )
+
+    echo "Found fingerprints:"
+    printf '  %s\n' "${fingerprints[@]}"
+
+    local expected=(
+        "8540A6F18833A80E9C1653A42FD21310B49F6B46"
+        "573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62"
+        "9E9BE90EACBCDE69FE9B204CBCDCD8A38D88A2B3"
+    )
+
+    for key in "${expected[@]}"; do
+        if printf '%s\n' "${fingerprints[@]}" | grep -qx "$key"; then
+            echo "✓ Verified $key"
+        else
+            echo "✗ Missing expected key $key"
+            exit 1
+        fi
+    done
 }
 
 # ─── PRE-FLIGHT CHECKS ───────────────────────────────────────────────

@@ -8,6 +8,7 @@ Begin by confirming the PHP version running on the server.
 
 ```sh
 php -v
+PHP_VERSION=$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;')
 ```
 
 ---
@@ -57,7 +58,7 @@ ErrorLog ${APACHE_LOG_DIR}/xyz_error.log
 Before restarting PHP-FPM, verify that its configuration is valid.
 
 ```sh
-php-fpm<version_number> -t
+php-fpm$PHP_VERSION -t
 ```
 
 For example:
@@ -120,7 +121,7 @@ Laravel logs frequently contain stack traces and exception details that do not a
 Review the PHP-FPM service logs for startup failures or runtime errors.
 
 ```sh
-journalctl -xeu php<version_number>-fpm.service
+journalctl -xeu php$PHP_VERSION-fpm.service
 ```
 
 For example:
@@ -281,7 +282,7 @@ sudo systemctl reload nginx
 Verify the configured execution time.
 
 ```sh
-php-fpm<version> -i | grep max_execution_time
+php-fpm$PHP_VERSION -i | grep max_execution_time
 ```
 
 Locate the configuration:
@@ -299,7 +300,7 @@ max_execution_time = 600
 Restart PHP-FPM after modification.
 
 ```sh
-sudo systemctl restart php8.3-fpm
+sudo systemctl restart php$PHP_VERSION-fpm
 ```
 
 ---
@@ -319,7 +320,7 @@ sudo systemctl restart php8.3-fpm
 Check for worker failures or timeout messages.
 
 ```sh
-sudo journalctl -u php8.3-fpm -n 100 --no-pager
+sudo journalctl -u php$PHP_VERSION-fpm -n 100 --no-pager
 ```
 
 or
